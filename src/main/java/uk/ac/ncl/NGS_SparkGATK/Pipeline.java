@@ -1,6 +1,14 @@
 package uk.ac.ncl.NGS_SparkGATK;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,7 +24,7 @@ public class Pipeline {
 	private String picardPath;
 	private String inFiles;	//specify files path in "/path/file1,/path/file2.."
 	private String outFolder;
-	
+
 
 
 	public Pipeline(String picardPath, String inFile, String outFile) {
@@ -48,57 +56,19 @@ public class Pipeline {
 		SparkConf conf = new SparkConf().setAppName(this.getClass().getName());
 		JavaSparkContext sc = new JavaSparkContext(conf);
 		
-	    List<Tuple2<String, String>> fastq_r1_r2 = new LinkedList<>();
-
-	    String[] filesPath = inFiles.split(",");
-	    int i = 0;
-	    while (i < filesPath.length) {
-			String pairedEnd_r1 = filesPath[i];
-			i++;
-			String pairedEnd_r2 = filesPath[i];
-			fastq_r1_r2.add(new Tuple2<String, String>(pairedEnd_r1, pairedEnd_r2));
-		}
-	    
-	    JavaRDD<Tuple2<String, String>> rdd_fastq_r1_r2 = sc.parallelize(fastq_r1_r2);
-	    
-	    rdd_fastq_r1_r2.map(pair -> {
-	    	String command = "java -Xmx8G -jar " + picardPath + " FastqToSam"
-					+ " FASTQ=" + pair._1
-					+ " FASTQ2=" + pair._2
-					+ " OUTPUT=" + outFolder + greatestCommonPrefix(pair._1, pair._2) + "_fastqtosam.bam"
-					+ " READ_GROUP_NAME=H0164.2 SAMPLE_NAME=NA12878 LIBRARY_NAME=Solexa-272222 PLATFORM_UNIT=H0164ALXX140820.2"
-					+ " PLATFORM=illumina SEQUENCING_CENTER=BI";
-	    	Runtime.getRuntime().exec(command);
-	    	return "";
-	    });
-				
-
+		FastqToSam fts = new FastqToSam(picardPath, inFiles, outFolder);
+		fts.run(sc);
 
 		//JavaPairRDD<String, String> ubam = sc.wholeTextFiles(outFolder);
-		
-	    
-	    /*.map(x -> {
-			x._1
-			return "";
-		}); */
-		
+
 
 		sc.close();
 		sc.stop();
 	}
-	
-	
-	
 
-	public String greatestCommonPrefix(String a, String b) {
-	    int minLength = Math.min(a.length(), b.length());
-	    for (int i = 0; i < minLength; i++) {
-	        if (a.charAt(i) != b.charAt(i)) {
-	            return a.substring(0, i);
-	        }
-	    }
-	    return a.substring(0, minLength);
-	}
+
+
+
 
 
 }
