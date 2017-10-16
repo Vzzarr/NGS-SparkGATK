@@ -11,6 +11,10 @@ import java.util.List;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 
+
+/**
+ * Created by Nicholas
+ */
 public class FastqToSam {
 
 	private String picardPath;
