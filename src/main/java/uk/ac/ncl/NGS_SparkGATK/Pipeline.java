@@ -21,10 +21,18 @@ public class Pipeline {
 	private String outFolder;
 
 
-	public Pipeline(String picardPath, String inFiles, String outFile) {
+	//testing FastqToSam
+	/*public Pipeline(String picardPath, String inFiles, String outFile) {
 		this.picardPath = picardPath;
 		this.inFiles = inFiles;
 		this.outFolder = outFile;
+	}*/
+	
+	//testing BwaAndMarkDuplicatesPipelineSpark
+	public Pipeline(String gatkPath, String inFolder, String referenceFolder) {
+		this.gatkPath = gatkPath;
+		this.inFiles = inFolder;
+		this.referenceFolder = referenceFolder;
 	}
 	
 	public Pipeline(String picardPath, String gatkPath, String inFiles, String referenceFolder, String knownSites, String outFolder) {
@@ -48,7 +56,7 @@ public class Pipeline {
 	public static void main(String[] args) {
 		double startTime = System.currentTimeMillis();
 
-		if(args.length < 6)
+		/*if(args.length < 6)
 			System.err.println("Usage:\n <picard-path> <gatk-path> <path-input-file1>,<path-input-file2> <reference-folder> "
 					+ "<known-sites1>,<known-sites2>,<known-sites3> <output-folder>");
 
@@ -56,7 +64,11 @@ public class Pipeline {
 		if(ca.check()) {
 			Pipeline pipeline = new Pipeline(args);
 			pipeline.run();
-		}
+		}*/
+		
+		Pipeline pipeline = new Pipeline(args[0], args[1], args[2]);
+		pipeline.run();
+		
 
 		double stopTime = System.currentTimeMillis();
 		double elapsedTime = (stopTime - startTime) / 1000;
@@ -67,10 +79,11 @@ public class Pipeline {
 		SparkConf conf = new SparkConf().setAppName(this.getClass().getName());
 		JavaSparkContext sc = new JavaSparkContext(conf);
 		
-		FastqToSam fts = new FastqToSam(picardPath, inFiles, outFolder);
-		fts.run(sc);
+		/*FastqToSam fts = new FastqToSam(picardPath, inFiles, outFolder);
+		fts.run(sc);*/
 		
-		BwaAndMarkDuplicatesPipelineSpark bwa_markDuplicates = new BwaAndMarkDuplicatesPipelineSpark(this.gatkPath, this.outFolder, this.referenceFolder);
+		//testing BwaAndMarkDuplicatesPipelineSpark
+		BwaAndMarkDuplicatesPipelineSpark bwa_markDuplicates = new BwaAndMarkDuplicatesPipelineSpark(this.gatkPath, this.inFiles, this.referenceFolder);
 		bwa_markDuplicates.run(sc);
 
 		//JavaPairRDD<String, String> ubam = sc.wholeTextFiles(outFolder);
