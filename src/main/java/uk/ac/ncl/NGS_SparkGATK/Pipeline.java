@@ -7,6 +7,9 @@ import java.util.List;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 
+import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.BwaAndMarkDuplicatesPipelineSpark;
+import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.FastqToSam;
+
 
 /**
  * Created by Nicholas
@@ -22,18 +25,18 @@ public class Pipeline {
 
 
 	//testing FastqToSam
-	/*public Pipeline(String picardPath, String inFiles, String outFile) {
+	public Pipeline(String picardPath, String inFiles, String outFile) {
 		this.picardPath = picardPath;
 		this.inFiles = inFiles;
 		this.outFolder = outFile;
-	}*/
+	}
 	
 	//testing BwaAndMarkDuplicatesPipelineSpark
-	public Pipeline(String gatkPath, String inFolder, String referenceFolder) {
+	/*public Pipeline(String gatkPath, String inFolder, String referenceFolder) {
 		this.gatkPath = gatkPath;
 		this.inFiles = inFolder;
 		this.referenceFolder = referenceFolder;
-	}
+	}*/
 	
 	public Pipeline(String picardPath, String gatkPath, String inFiles, String referenceFolder, String knownSites, String outFolder) {
 		this.picardPath = picardPath;
@@ -79,12 +82,12 @@ public class Pipeline {
 		SparkConf conf = new SparkConf().setAppName(this.getClass().getName());
 		JavaSparkContext sc = new JavaSparkContext(conf);
 		
-		/*FastqToSam fts = new FastqToSam(picardPath, inFiles, outFolder);
-		fts.run(sc);*/
+		FastqToSam fts = new FastqToSam(picardPath, inFiles, outFolder);
+		fts.run(sc);
 		
 		//testing BwaAndMarkDuplicatesPipelineSpark
-		BwaAndMarkDuplicatesPipelineSpark bwa_markDuplicates = new BwaAndMarkDuplicatesPipelineSpark(this.gatkPath, this.inFiles, this.referenceFolder);
-		bwa_markDuplicates.run(sc);
+		/*BwaAndMarkDuplicatesPipelineSpark bwa_markDuplicates = new BwaAndMarkDuplicatesPipelineSpark(this.gatkPath, this.inFiles, this.referenceFolder);
+		bwa_markDuplicates.run(sc);*/
 
 		//JavaPairRDD<String, String> ubam = sc.wholeTextFiles(outFolder);
 
