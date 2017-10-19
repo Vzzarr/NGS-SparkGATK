@@ -90,7 +90,7 @@ public class CheckArgs {
 	private boolean checkOutput() {
 		File of = new File(this.outFolder);
 		if(!of.isDirectory() || of.list().length > 0) {
-			System.err.println("<output-folder> must be an empty directory");
+			System.err.println(this.outFolder + ": <output-folder> must be an empty directory: " + of.list().length + of.isDirectory());
 			return false;
 		}
 		return true;

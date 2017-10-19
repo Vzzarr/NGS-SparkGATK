@@ -56,6 +56,7 @@ public class FastqToSam extends AbstractGATKParallel {
 		} catch (IOException x) { System.err.println(x); }
 	}
 
+	
 	private String greatestCommonPrefix(String a, String b) {
 		int minLength = Math.min(a.length(), b.length());
 		for (int i = 0; i < minLength; i++) {
