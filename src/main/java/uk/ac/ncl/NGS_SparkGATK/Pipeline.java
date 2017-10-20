@@ -22,11 +22,11 @@ public class Pipeline {
 
 
 	//testing FastqToSam
-	/*public Pipeline(String picardPath, String inFiles, String outFile) {
+	public Pipeline(String picardPath, String inFiles, String outFile) {
 		this.picardPath = picardPath;
 		this.inFiles = inFiles;
 		this.outFolder = outFile;
-	}*/
+	}
 	
 	//testing BwaAndMarkDuplicatesPipelineSpark
 	/*public Pipeline(String gatkPath, String inFolder, String referenceFolder) {
@@ -43,7 +43,7 @@ public class Pipeline {
 		this.knownSites = knownSites;
 	}*/
 	
-	public Pipeline(String picardPath, String gatkPath, String inFiles, String referenceFolder, String knownSites, String outFolder) {
+	/*public Pipeline(String picardPath, String gatkPath, String inFiles, String referenceFolder, String knownSites, String outFolder) {
 		this.picardPath = picardPath;
 		this.gatkPath = gatkPath;
 		this.inFiles = inFiles;
@@ -59,7 +59,7 @@ public class Pipeline {
 		this.referenceFolder = args[3];
 		this.knownSites = args[4];
 		this.outFolder = args[5];
-	}
+	}*/
 
 	public static void main(String[] args) {
 		double startTime = System.currentTimeMillis();
@@ -68,14 +68,14 @@ public class Pipeline {
 			System.err.println("Usage:\n <picard-path> <gatk-path> <path-input-file1>,<path-input-file2> <reference-folder> "
 					+ "<known-sites1>,<known-sites2>,<known-sites3> <output-folder>");
 
-		CheckArgs ca = new CheckArgs(args);
-		if(ca.check()) {
-			Pipeline pipeline = new Pipeline(args);
-			pipeline.run();
-		}
+//		CheckArgs ca = new CheckArgs(args);
+//		if(ca.check()) {
+//			Pipeline pipeline = new Pipeline(args);
+//			pipeline.run();
+//		}
 		
-		/*Pipeline pipeline = new Pipeline(args[0], args[1], args[2]);
-		pipeline.run();*/
+		Pipeline pipeline = new Pipeline(args[0], args[1], args[2]);
+		pipeline.run();
 		
 		/*Pipeline pipeline = new Pipeline(args[0], args[1], args[2], args[3]);
 		pipeline.run();*/
@@ -94,12 +94,12 @@ public class Pipeline {
 		fts.run(sc);
 		
 		//testing BwaAndMarkDuplicatesPipelineSpark
-		BwaAndMarkDuplicatesPipelineSpark bwa_markDuplicates = new BwaAndMarkDuplicatesPipelineSpark(this.gatkPath, this.inFiles, this.referenceFolder);
-		bwa_markDuplicates.run(sc);
+		/*BwaAndMarkDuplicatesPipelineSpark bwa_markDuplicates = new BwaAndMarkDuplicatesPipelineSpark(this.gatkPath, this.outFolder, this.referenceFolder);
+		bwa_markDuplicates.run(sc);*/
 
 		//testing BwaAndMarkDuplicatesPipelineSpark
-		BQSRPipelineSpark bqsr = new BQSRPipelineSpark(this.gatkPath, this.inFiles, this.referenceFolder, this.knownSites);
-		bqsr.run(sc);
+		/*BQSRPipelineSpark bqsr = new BQSRPipelineSpark(this.gatkPath, this.outFolder, this.referenceFolder, this.knownSites);
+		bqsr.run(sc);*/
 
 		//JavaPairRDD<String, String> ubam = sc.wholeTextFiles(outFolder);
 
