@@ -64,9 +64,9 @@ public class Pipeline {
 	public static void main(String[] args) {
 		double startTime = System.currentTimeMillis();
 
-		if(args.length < 6)
+		/*if(args.length < 6)
 			System.err.println("Usage:\n <picard-path> <gatk-path> <path-input-file1>,<path-input-file2> <reference-folder> "
-					+ "<known-sites1>,<known-sites2>,<known-sites3> <output-folder>");
+					+ "<known-sites1>,<known-sites2>,<known-sites3> <output-folder>");*/
 
 //		CheckArgs ca = new CheckArgs(args);
 //		if(ca.check()) {
