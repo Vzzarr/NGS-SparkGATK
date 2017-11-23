@@ -6,7 +6,27 @@ REFERENCE_FOLDER=$4
 KNOWN_SITES=$5
 OUT_FOLDER=$6
 GATK_PATH_3_8=$7
+ANNOVAR_FOLDER=$8
+IGM_ANNO_FOLDER=$9
+#################################################################
+#CREATE DIRECTORIES
+dir_prepro=PREPROCESSING/
+if [ ! -d "$OUT_FOLDER$dir_prepro" ]; then
+	mkdir $OUT_FOLDER$dir_prepro
+fi
 
+dir_vardis=VARIANTDISCOVERY/
+if [ ! -d "$OUT_FOLDER$dir_vardis" ]; then
+	mkdir $OUT_FOLDER$dir_vardis
+fi
+
+dir_callref=CALLSETREFINEMENT/
+if [ ! -d "$OUT_FOLDER$dir_callref" ]; then
+	mkdir $OUT_FOLDER$dir_callref
+fi
+
+
+np=$(nproc)
 #################################################################
 #VARIANT DISCOVERY OUTPUTS
 raw=raw_variants.vcf
@@ -20,26 +40,25 @@ recalINDEL=recalibrate_INDEL.recal
 tranchesINDEL=recalibrate_INDEL.tranches
 
 recalibratedINDEL=recalibrated_variants.vcf
+
+
+#################################################################
+#CALLSET REFINEMENT OUTPUTS
+recalibrated_postCGP=recalibratedVariants.postCGP.vcf
+recalibrated_postCGP_Gfiltered=recalibratedVariants.postCGP.Gfiltered.vcf
+recalibrated_postCGP_Gfiltered_deNovos=recalibratedVariants.postCGP.Gfiltered.deNovos.vcf
+
 #################################
-#		PREPROCESSING			#
+#		PRE-PROCESSING			#
 #################################
 
 #################################################################
 #   GETTING INPUT PAIRED END FASTQ FILES
-#IFS=',' read -a files <<< "$IN_FILES"
-
-
-#   CHECKING INPUT PAIRED END FASTQ FILES
-#if (( ${#files[@]} % 2 == 1 )); then
-#	echo "Expected even number of files: Paired End"
-#	exit
-#fi
 
 : <<'COMMENT'
-
 #################################################################
 #   GENEREATING uBAM FROM FASTQ FILES
-spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar $PICARD_PATH $IN_FILES $OUT_FOLDER
+spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar FastqToSam $PICARD_PATH $IN_FILES $OUT_FOLDER$dir_prepro
 
 #PRODUCED_UBAM=${#files[@]} / 2
 
@@ -51,7 +70,7 @@ spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-Spar
 
 #################################################################
 #   BwaAndMarkDuplicatesPipelineSpark
-for ubam in $OUT_FOLDER*_fastqtosam.bam
+for ubam in $OUT_FOLDER$dir_prepro*_fastqtosam.bam
 do
 	output="${ubam/_fastqtosam.bam/'_dedup_reads.bam'}"
 	
@@ -74,7 +93,7 @@ do
    known="$known --knownSites $k "
 done
 
-for ubam in $OUT_FOLDER*_dedup_reads.bam
+for ubam in $OUT_FOLDER$dir_prepro*_dedup_reads.bam
 do
 	output="${ubam/_dedup_reads.bam/'_recal_reads.bam'}"
 	$GATK_PATH BQSRPipelineSpark				\
@@ -87,7 +106,7 @@ done
 
 #################################################################
 #   HaplotypeCallerSpark
-for ubam in $OUT_FOLDER*_recal_reads.bam
+for ubam in $OUT_FOLDER$dir_prepro*_recal_reads.bam
 do
 	output="${ubam/_recal_reads.bam/'_raw_variants.g.vcf'}"
 	$GATK_PATH HaplotypeCallerSpark				\
@@ -96,52 +115,36 @@ do
 	--output $output							\
 	--emitRefConfidence GVCF					
 done
+COMMENT
+
+spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar VariantDiscovery $GATK_PATH_3_8 $REFERENCE_FOLDER*.fasta $OUT_FOLDER$dir_prepro $OUT_FOLDER$dir_vardis
 
 
-
+: <<'COMMENT'
 #################################
 #		VARIANT DISCOVERY		#
 #################################
-
 #################################################################
 #   GenotypeGVCFs
-#threads=nproc
-#lscpu -p | grep -c "^[0-9]"
-
 variants=" "
 
-for gvcf in $OUT_FOLDER*_raw_variants.g.vcf
+for gvcf in $OUT_FOLDER$dir_prepro*_raw_variants.g.vcf
 do
 	variants="$variants --variant $gvcf "
 done
 
-java -jar $GATK_PATH_3_8 -T GenotypeGVCFs -nt 8 \
+java -jar $GATK_PATH_3_8 -T GenotypeGVCFs -nt "$np" \
 -R $REFERENCE_FOLDER*.fasta \
 $variants	\
--o $OUT_FOLDER$raw
-COMMENT
+-o $OUT_FOLDER$dir_vardis$raw
 
-
-: <<'COMMENT'
-************************************************
-$GATK_PATH GenomicsDBImport \
-$variants \
---genomicsDBWorkspace my_database \
---intervals 20
-
-
-$GATK_PATH GenotypeGVCFs \
---reference $REFERENCE_FOLDER*.fasta	\
---variant gendb://my_database			\
---annotationGroup StandardAnnotation -newQual \
---output raw_variants.vcf
 
 #################################################################
 #SNP
 #VariantRecalibrator
-java -jar $GATK_PATH_3_8 -T VariantRecalibrator -nt 8 \
+java -jar $GATK_PATH_3_8 -T VariantRecalibrator -nt "$np" \
 -R $REFERENCE_FOLDER*.fasta \
--input $OUT_FOLDER$raw \
+-input $OUT_FOLDER$dir_vardis$raw \
 -resource:hapmap,known=false,training=true,truth=true,prior=15.0 /data/ngs/hapmap-3.3-hg19/hapmap_3.3.hg19.vcf \
 -resource:omni,known=false,training=true,truth=true,prior=12.0 /data/ngs/omni-2.5-hg19/1000G_omni2.5.hg19.vcf \
 -resource:1000G,known=false,training=true,truth=false,prior=10.0 /data/ngs/1000G_phase1/1000G_phase1.indels.hg19.sites.vcf \
@@ -149,42 +152,135 @@ java -jar $GATK_PATH_3_8 -T VariantRecalibrator -nt 8 \
 -an DP -an QD -an FS -an SOR -an MQ -an MQRankSum -an ReadPosRankSum \
 -mode SNP \
 -tranche 100.0 -tranche 99.9 -tranche 99.0 -tranche 90.0 \
--recalFile $OUT_FOLDER$recalSNP \
--tranchesFile $OUT_FOLDER$tranchesSNP \
+-recalFile $OUT_FOLDER$dir_vardis$recalSNP \
+-tranchesFile $OUT_FOLDER$dir_vardis$tranchesSNP \
 
 #ApplyVQSR
-java -jar $GATK_PATH_3_8 -T ApplyRecalibration -nt 8 \
+java -jar $GATK_PATH_3_8 -T ApplyRecalibration -nt "$np" \
 -R $REFERENCE_FOLDER*.fasta \
--input $OUT_FOLDER$raw \
+-input $OUT_FOLDER$dir_vardis$raw \
 -mode SNP \
 --ts_filter_level 99.0 \
--recalFile $OUT_FOLDER$recalSNP \
--tranchesFile $OUT_FOLDER$tranchesSNP \
--o $OUT_FOLDER$recalibratedSNP
+-recalFile $OUT_FOLDER$dir_vardis$recalSNP \
+-tranchesFile $OUT_FOLDER$dir_vardis$tranchesSNP \
+-o $OUT_FOLDER$dir_vardis$recalibratedSNP
 
 
 #################################################################
 #INDEL
 #VariantRecalibrator
-np=$(eval "nproc")
-java -jar $GATK_PATH_3_8 -T VariantRecalibrator -nt 8 \
+java -jar $GATK_PATH_3_8 -T VariantRecalibrator -nt "$np" \
 -R $REFERENCE_FOLDER*.fasta \
--input $OUT_FOLDER$recalibratedSNP \
+-input $OUT_FOLDER$dir_vardis$recalibratedSNP \
 -resource:mills,known=false,training=true,truth=true,prior=12.0 /data/ngs/mills_and_1000G-hg19/Mills_and_1000G_gold_standard.indels.hg19.vcf \
 -resource:dbsnp,known=true,training=false,truth=false,prior=2.0 /data/ngs/dbsnp1.3.8/dbsnp_138.hg19.vcf \
 -an QD -an DP -an FS -an SOR -an MQRankSum -an ReadPosRankSum \
 -mode INDEL \
 -tranche 100.0 -tranche 99.9 -tranche 99.0 -tranche 90.0 --maxGaussians 4 \
--recalFile $OUT_FOLDER$recalINDEL \
--tranchesFile $OUT_FOLDER$tranchesINDEL \
-COMMENT
+-recalFile $OUT_FOLDER$dir_vardis$recalINDEL \
+-tranchesFile $OUT_FOLDER$dir_vardis$tranchesINDEL \
+
 
 #ApplyVQSR
-java -jar $GATK_PATH_3_8 -T ApplyRecalibration -nt 8 \
+java -jar $GATK_PATH_3_8 -T ApplyRecalibration -nt "$np" \
 -R $REFERENCE_FOLDER*.fasta \
--input $OUT_FOLDER$recalibratedSNP \
+-input $OUT_FOLDER$dir_vardis$recalibratedSNP \
 -mode INDEL \
 --ts_filter_level 99.0 \
--recalFile $OUT_FOLDER$recalINDEL \
--tranchesFile $OUT_FOLDER$tranchesINDEL \
--o $OUT_FOLDER$recalibratedINDEL
+-recalFile $OUT_FOLDER$dir_vardis$recalINDEL \
+-tranchesFile $OUT_FOLDER$dir_vardis$tranchesINDEL \
+-o $OUT_FOLDER$dir_vardis$recalibratedINDEL
+
+
+
+#################################
+#		CALLSET REFINEMENT		#
+#################################
+#Refine GTs
+
+java -jar $GATK_PATH_3_8 -T CalculateGenotypePosteriors \
+-R $REFERENCE_FOLDER*.fasta \
+--supporting /data/ngs/1000G_phase1/1000G_phase1.indels.hg19.sites.vcf \
+-V $OUT_FOLDER$dir_vardis$recalibratedINDEL \
+-o $OUT_FOLDER$dir_callref$recalibrated_postCGP
+#-ped trio.ped 
+
+java -jar $GATK_PATH_3_8 -T VariantFiltration \
+-R $REFERENCE_FOLDER*.fasta \
+-V $OUT_FOLDER$dir_callref$recalibrated_postCGP \
+-G_filter "GQ < 20.0" -G_filterName lowGQ \
+-o $OUT_FOLDER$dir_callref$recalibrated_postCGP_Gfiltered
+
+
+java -jar $GATK_PATH_3_8 -T VariantAnnotator \
+-R $REFERENCE_FOLDER*.fasta \
+-V $OUT_FOLDER$dir_callref$recalibrated_postCGP_Gfiltered \
+-A PossibleDeNovo \
+-o $OUT_FOLDER$dir_callref$recalibrated_postCGP_Gfiltered_deNovos
+#-ped trio.ped
+COMMENT
+
+
+vcf=".vcf"
+
+ConvertCmd=lib/convert2annovar.pl
+ConvertedFile=converted.ann
+
+TableAnnovarCmd=lib/table_annovar.pl
+HumanDB=humandb/
+AnnovarOutputFormat=.hg19_multianno.txt
+
+AnnotateIGMCmd=src/main/annotate.pl
+IGMOutputFormat=igm_anno.txt
+
+ExonicFilterFormat=exonic_filtered.txt
+
+#SPLITTING deNovo.vcf
+result=$(cat $OUT_FOLDER$dir_callref$recalibrated_postCGP_Gfiltered_deNovos | egrep '^#CHROM')
+IFS=$'\t' read -a files <<< "$result"
+
+for (( i=10; i<${#files[@]}+1; i++ ));	#10 because since 10 there are fields of file names
+do
+: <<'COMMENT'
+
+	#Splitting deNovos.vcf in more files, according to the sample name
+	java -jar $GATK_PATH_3_8 -T SelectVariants -nt "$np" \
+	-R $REFERENCE_FOLDER*.fasta \
+	-V $OUT_FOLDER$dir_callref$recalibrated_postCGP_Gfiltered_deNovos \
+	-o $OUT_FOLDER$dir_callref${files[$i-1]}$vcf \
+	-sn ${files[$i-1]}
+
+	#removing rows with *
+	sed -i '/\*/d' $OUT_FOLDER$dir_callref${files[$i-1]}$vcf
+
+	#Converting to AnnoVar format
+	perl $ANNOVAR_FOLDER$ConvertCmd -format vcf4old -includeinfo $OUT_FOLDER$dir_callref${files[$i-1]}$vcf > $OUT_FOLDER$dir_callref${files[$i-1]}$ConvertedFile
+
+	#AnnoVar annotation
+	perl $ANNOVAR_FOLDER$TableAnnovarCmd -remove -otherinfo -buildver hg19 \
+	-protocol knownGene,ensGene,refGene,phastConsElements46way,genomicSuperDups,esp6500si_all,1000g2012apr_all,cg69,snp137,ljb26_all \
+	-operation g,g,g,r,r,f,f,f,f,f $OUT_FOLDER$dir_callref${files[$i-1]}$ConvertedFile $ANNOVAR_FOLDER$HumanDB
+	#IGM Annotation
+	perl $IGM_ANNO_FOLDER$AnnotateIGMCmd -samples ${files[$i-1]} \
+	-avoutput $OUT_FOLDER$dir_callref${files[$i-1]}$ConvertedFile$AnnovarOutputFormat \
+	-out $OUT_FOLDER$dir_callref${files[$i-1]}$IGMOutputFormat
+COMMENT
+	#spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar ExonicFilter $OUT_FOLDER$dir_callref${files[$i-1]}$IGMOutputFormat $OUT_FOLDER$dir_callref${files[$i-1]}$ExonicFilterFormat
+
+
+done
+
+
+
+
+#Annotate Variants
+
+#convert
+#perl $ANNOVAR_FOLDER$ConvertCmd -format vcf4old -includeinfo $OUT_FOLDER${files[$i-1]}$vcf > $OUT_FOLDER${files[$i-1]}$ConvertedFile
+
+#perl $ANNOVAR_FOLDER$TableAnnovarCmd -remove -otherinfo -buildver hg19 \
+#-protocol knownGene,ensGene,refGene,phastConsElements46way,genomicSuperDups,esp6500si_all,1000g2012apr_all,cg69,snp137,ljb26_all \
+#-operation g,g,g,r,r,f,f,f,f,f $OUT_FOLDER$ConvertedFile $ANNOVAR_FOLDER$HumanDB
+
+
+#IGM-Anno/src/main/annotate.pl

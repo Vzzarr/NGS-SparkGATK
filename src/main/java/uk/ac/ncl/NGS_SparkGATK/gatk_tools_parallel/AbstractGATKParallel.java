@@ -27,7 +27,7 @@ public abstract class AbstractGATKParallel {
 				"done\n";
 
 		try {
-			PrintWriter pw = new PrintWriter(new FileWriter(this.getClass().getSimpleName() + ".sh"));	//TODO test if this.getClass().getName() works
+			PrintWriter pw = new PrintWriter(new FileWriter(this.getClass().getSimpleName() + ".sh"));
 			pw.println(bashScript);
 			pw.close();
 
