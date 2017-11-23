@@ -133,18 +133,6 @@ public class Pipeline {
 			break;
 		}
 
-		/*if(this.arguments[0].equals("FastqToSam")) {
-			FastqToSam fts = new FastqToSam(picardPath, inFiles, outFolder);
-			fts.run(sc);	
-		}
-		if(this.arguments[0].equals("SplitterDeNovos")) {
-
-		}
-		if(this.arguments[0].equals("ExonicFilter")) {
-
-		}*/
-
-
 		//JavaPairRDD<String, String> ubam = sc.wholeTextFiles(outFolder);
 
 

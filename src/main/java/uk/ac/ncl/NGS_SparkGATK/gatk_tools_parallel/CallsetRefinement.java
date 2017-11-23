@@ -2,7 +2,10 @@ package uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel;
 
 import org.apache.spark.api.java.JavaSparkContext;
 
-public class CallsetRefinement extends AbstractGATKParallel {
+/**
+ * Created by @author nicholas
+ */
+public class CallsetRefinement extends AbstractGATKSpark {
 
 	private String referencePath;
 	

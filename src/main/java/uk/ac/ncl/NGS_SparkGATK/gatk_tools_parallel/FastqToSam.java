@@ -1,19 +1,15 @@
 package uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 
 
 /**
- * Created by Nicholas
+ * Created by @author nicholas
  */
-public class FastqToSam extends AbstractGATKParallel {
+public class FastqToSam extends AbstractGATKSpark {
 
 	private String picardPath;
 	private String inFiles;
@@ -44,28 +40,16 @@ public class FastqToSam extends AbstractGATKParallel {
 			i++;
 		}
 
-		JavaRDD<String> rdd_fastq_r1_r2 = sc.parallelize(fastq_r1_r2);
-		createBashScript(gatkCommand);
-
-		JavaRDD<String> bashExec = rdd_fastq_r1_r2.pipe(System.getProperty("user.dir") + "/" + this.getClass().getSimpleName() + ".sh");
-
-
-		for (String string : bashExec.collect()) 
-			System.out.println(string);
-
-		try {
-			Files.delete(Paths.get(System.getProperty("user.dir") + "/" + this.getClass().getSimpleName() + ".sh"));
-		} catch (IOException x) { System.err.println(x); }
+		super.parallelPipe(sc, fastq_r1_r2);
 	}
 
 	
 	private String greatestCommonPrefix(String a, String b) {
 		int minLength = Math.min(a.length(), b.length());
-		for (int i = 0; i < minLength; i++) {
-			if (a.charAt(i) != b.charAt(i)) {
+		for (int i = 0; i < minLength; i++)
+			if (a.charAt(i) != b.charAt(i))
 				return a.substring(0, i);
-			}
-		}
+
 		return a.substring(0, minLength);
 	}
 }

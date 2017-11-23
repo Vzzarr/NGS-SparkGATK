@@ -11,7 +11,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 /**
  * Created by Nicholas
  */
-public class BwaAndMarkDuplicatesPipelineSpark extends AbstractGATKParallel implements Serializable {
+public class BwaAndMarkDuplicatesPipelineSpark extends AbstractGATKSpark implements Serializable {
 
 	/**
 	 * 

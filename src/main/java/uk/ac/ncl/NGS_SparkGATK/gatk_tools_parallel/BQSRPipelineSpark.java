@@ -10,7 +10,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 /**
  * Created by Nicholas
  */
-public class BQSRPipelineSpark extends AbstractGATKParallel {
+public class BQSRPipelineSpark extends AbstractGATKSpark {
 
 	private String gatkPath;
 	private String inputFolder;		//folder that contains the samples (converted in uBAM in the previous step) to process
