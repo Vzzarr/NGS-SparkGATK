@@ -5,6 +5,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.BQSRPipelineSpark;
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.BwaAndMarkDuplicatesPipelineSpark;
+import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.CallsetRefinement;
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.ExonicFilter;
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.FastqToSam;
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.VariantDiscovery;
@@ -117,7 +118,11 @@ public class Pipeline {
 			break;
 			
 		case "CallsetRefinement":
-
+			if(this.arguments.length != 5)
+				System.err.println("For CallsetRefinement expected <gatk3_8path> <referenceFile> (.fasta) "
+						+ "<inFolder> (containing file recalibrated_variants.vcf produced by VariantDiscovery) and an <outFolder>");
+			CallsetRefinement cf = new CallsetRefinement(this.arguments[1], this.arguments[2], this.arguments[3], this.arguments[4]);
+			cf.run(sc);
 			break;
 		
 		case "ExonicFilter":

@@ -20,26 +20,38 @@ public class Dummy {
 
 	public static void main(String[] args) throws IOException {
 	
-//		String command = "/data/ngs/libraries/gatk_4/gatk-launch BwaAndMarkDuplicatesPipelineSpark --input /data0/NGS-SparkGATK/output/PFC_0029_IUH_AGTTCC_L007_R_fastqtosam.bam --reference /data/ngs/reference/hg19-ucsc/ucsc.hg19.fasta --disableSequenceDictionaryValidation true --output /data0/NGS-SparkGATK/output/PFC_0029_IUH_AGTTCC_L007_R_dedup_reads.bam";
-//		Runtime.getRuntime().exec(command);
-		find("eclipse");
+		String header = "#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	PFC_0028_SW_CGTACG_R	PFC_0029_IUH_AGTTCC_R	PFC_0030_MSt_GAGTGG_R	PFC_0031_DR_TTAGGC_R	PFC_0032_IMc_CAGATC_R	PFC_0033_MH_AGTTCC_R";
+
+		List<String> headerFields = Arrays.asList(header.split("\t"));
+		headerFields = headerFields.subList(9, headerFields.size());	//test it
+
+		for (String field : headerFields) {
+			field = "cane|" + field;
+			System.out.println(field);
+		}
+//		String command = "ls -l";
+//		exec(command);
 //		System.out.println(cane);
 	}
-//	locate -br '^hapmap_3.3.hg19.vcf$'
-	    public static void find(String fileName) {
-	        File root = new File("/");
-	        try {
-	            boolean recursive = true;
+//	locate -br '^target$'
+	   
+	
+	
+	
+	public static String exec(String command) {
+		String line, output = "";
+		try {
+			ProcessBuilder builder = new ProcessBuilder(command.split(" "));
+			Process process = builder.start();
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-	            Collection<File> files = FileUtils.listFiles(root, null, recursive);
-
-	            for (Iterator<File> iterator = files.iterator(); iterator.hasNext();) {
-	                File file = (File) iterator.next();
-	                if (file.getName().equals(fileName))
-	                    System.out.println(file.getAbsolutePath());
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+				output += line + "\n";
+			}
+		} catch (IOException e) { e.printStackTrace(); }
+		return output;
+	}
+	
 }

@@ -55,10 +55,11 @@ recalibrated_postCGP_Gfiltered_deNovos=recalibratedVariants.postCGP.Gfiltered.de
 #################################################################
 #   GETTING INPUT PAIRED END FASTQ FILES
 
-: <<'COMMENT'
 #################################################################
 #   GENEREATING uBAM FROM FASTQ FILES
-spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar FastqToSam $PICARD_PATH $IN_FILES $OUT_FOLDER$dir_prepro
+
+#spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar FastqToSam $PICARD_PATH $IN_FILES $OUT_FOLDER$dir_prepro
+: <<'COMMENT'
 
 #PRODUCED_UBAM=${#files[@]} / 2
 
@@ -117,7 +118,7 @@ do
 done
 COMMENT
 
-spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar VariantDiscovery $GATK_PATH_3_8 $REFERENCE_FOLDER*.fasta $OUT_FOLDER$dir_prepro $OUT_FOLDER$dir_vardis
+#spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar VariantDiscovery $GATK_PATH_3_8 $REFERENCE_FOLDER*.fasta $OUT_FOLDER$dir_prepro $OUT_FOLDER$dir_vardis
 
 
 : <<'COMMENT'
@@ -190,8 +191,11 @@ java -jar $GATK_PATH_3_8 -T ApplyRecalibration -nt "$np" \
 -recalFile $OUT_FOLDER$dir_vardis$recalINDEL \
 -tranchesFile $OUT_FOLDER$dir_vardis$tranchesINDEL \
 -o $OUT_FOLDER$dir_vardis$recalibratedINDEL
+COMMENT
 
+spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar CallsetRefinement $GATK_PATH_3_8 $REFERENCE_FOLDER*.fasta $OUT_FOLDER$dir_vardis $OUT_FOLDER$dir_callref
 
+: <<'COMMENT'
 
 #################################
 #		CALLSET REFINEMENT		#
@@ -212,7 +216,7 @@ java -jar $GATK_PATH_3_8 -T VariantFiltration \
 -o $OUT_FOLDER$dir_callref$recalibrated_postCGP_Gfiltered
 
 
-java -jar $GATK_PATH_3_8 -T VariantAnnotator \
+java -jar $GATK_PATH_3_8 -T VariantAnnotator -nt "$np" \
 -R $REFERENCE_FOLDER*.fasta \
 -V $OUT_FOLDER$dir_callref$recalibrated_postCGP_Gfiltered \
 -A PossibleDeNovo \
@@ -260,6 +264,7 @@ do
 	perl $ANNOVAR_FOLDER$TableAnnovarCmd -remove -otherinfo -buildver hg19 \
 	-protocol knownGene,ensGene,refGene,phastConsElements46way,genomicSuperDups,esp6500si_all,1000g2012apr_all,cg69,snp137,ljb26_all \
 	-operation g,g,g,r,r,f,f,f,f,f $OUT_FOLDER$dir_callref${files[$i-1]}$ConvertedFile $ANNOVAR_FOLDER$HumanDB
+	
 	#IGM Annotation
 	perl $IGM_ANNO_FOLDER$AnnotateIGMCmd -samples ${files[$i-1]} \
 	-avoutput $OUT_FOLDER$dir_callref${files[$i-1]}$ConvertedFile$AnnovarOutputFormat \

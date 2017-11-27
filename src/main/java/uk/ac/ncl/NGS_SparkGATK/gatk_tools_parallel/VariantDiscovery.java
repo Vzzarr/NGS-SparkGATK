@@ -56,7 +56,7 @@ public class VariantDiscovery extends AbstractGATKSpark {
 
 	/*SNP*/
 	private void variantRecalibratorSNP(JavaSparkContext sc) {
-		//TODO locate output is not captured: try to resolve in order to find dinamically in the FS the position of these files:
+		//TODO locate output is not captured: try to resolve in order to find dynamically in the FS the position of these files:
 		String hapmap3_3 = super.exec("locate -br '^hapmap_3.3.hg19.vcf$'");
 		String kG_omni2_5 = super.exec("locate -br '^1000G_omni2.5.hg19.vcf$'");
 		String kG_phase1_indels = super.exec("locate -br '^1000G_phase1.indels.hg19.sites.vcf$'");

@@ -23,7 +23,7 @@ public abstract class AbstractGATKSpark {
 	 * the command that calls and executes the GATK tool
 	 */
 	protected String gatkCommand;
-	
+
 	/**
 	 * It expects to create a List<String> parameters, where each element corresponds to the execution of a @gatkCommand tool
 	 * In particular in each element there are parameters (| separated) that should be passed to the tool
@@ -33,8 +33,8 @@ public abstract class AbstractGATKSpark {
 	 * @param sc
 	 */
 	abstract void run(JavaSparkContext sc);
-	
-	
+
+
 	protected void createBashScript(String gatkCommand) {
 		String bashScript = "#!/bin/bash\n" +
 				"cd /\n" + 
@@ -51,13 +51,13 @@ public abstract class AbstractGATKSpark {
 			Runtime.getRuntime().exec("chmod +x " + System.getProperty("user.dir") + "/" + this.getClass().getSimpleName() + ".sh");
 		} catch (IOException ioe) { ioe.printStackTrace(); }
 	}
-	
+
 	protected String exec(String command) {
 		String line, output = "";
 		try {
 			ProcessBuilder builder = new ProcessBuilder(command.split(" "));
 			Process process = builder.start();
-			
+
 			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
 			while ((line = br.readLine()) != null) {
@@ -67,20 +67,22 @@ public abstract class AbstractGATKSpark {
 		} catch (IOException e) { e.printStackTrace(); }
 		return output;
 	}
-	
+
 	/**
-	 * gathers all the instructions to execute the JavaRDD.pipe() method
+	 * Gathers all the instructions to execute the JavaRDD.pipe() method.
+	 * In particular creates a bash script containing bash commands to execute; at the end the script is deleted
 	 */
 	protected void parallelPipe(JavaSparkContext sc, List<String> parameters) {
-		createBashScript(this.gatkCommand);
-		JavaRDD<String> bashExec = sc.parallelize(parameters)
-				.pipe(System.getProperty("user.dir") + "/" + this.getClass().getSimpleName() + ".sh");
-		
-		for (String string : bashExec.collect()) 
-			System.out.println(string);
-
 		try {
-			Files.delete(Paths.get(System.getProperty("user.dir") + "/" + this.getClass().getSimpleName() + ".sh"));
-		} catch (IOException x) { System.err.println(x); }
+			createBashScript(this.gatkCommand);
+			JavaRDD<String> bashExec = sc.parallelize(parameters)
+					.pipe(System.getProperty("user.dir") + "/" + this.getClass().getSimpleName() + ".sh");
+
+			for (String string : bashExec.collect()) 
+				System.out.println(string);
+		} finally {
+			try { Files.delete(Paths.get(System.getProperty("user.dir") + "/" + this.getClass().getSimpleName() + ".sh")); } 
+			catch (IOException x) { System.err.println(x); }
+		}
 	}
 }
