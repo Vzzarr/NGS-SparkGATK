@@ -50,12 +50,9 @@ public class CallsetRefinement extends AbstractGATKSpark {
 
 
 	private void calculateGenotypePosteriors(JavaSparkContext sc) {
-		//TODO locate output is not captured: try to resolve in order to find dynamically in the FS the position of these files:
-		String kG_phase1_indels = super.exec("locate -br '^1000G_phase1.indels.hg19.sites.vcf$'");
-
+		//TODO check one more time if locate works effectively in CallsetRefinement
 		super.gatkCommand = "java -jar ${files[0]} -T CalculateGenotypePosteriors " +	//-nt parallel execution not supported
-				" -R ${files[1]} --supporting /data/ngs/1000G_phase1/1000G_phase1.indels.hg19.sites.vcf " + kG_phase1_indels +
-				" -V ${files[2]} -o ${files[3]}";
+				" -R ${files[1]} --supporting " + super.locate("1000G_phase1.indels.hg19.sites.vcf") + " -V ${files[2]} -o ${files[3]}";
 
 		List<String> parameters = new LinkedList<>();
 		parameters.add(this.gatk3_8path + "|" + this.referenceFile + "|" +	this.inFolder + "recalibrated_variants.vcf|" + 
@@ -103,7 +100,6 @@ public class CallsetRefinement extends AbstractGATKSpark {
 		super.parallelPipe(sc, parameters);
 	}
 
-
 	private void convert2annovar(JavaSparkContext sc) {
 		List<String> headerFields = getHeader(this.outFolder + "recalibratedVariants.postCGP.Gfiltered.deNovos.vcf");
 
@@ -111,11 +107,7 @@ public class CallsetRefinement extends AbstractGATKSpark {
 		for (String field : headerFields.subList(9, headerFields.size())	)	//discarding the first 9 fields, in order to obtain only the sample name
 			parameters.add(this.outFolder + field + ".vcf|" + this.outFolder + field + "converted.ann");
 
-		//TODO locate output is not captured: try to resolve in order to find dynamically in the FS the position of these files:
-		String convert2annovar = super.exec("locate -br '^convert2annovar.pl$'");
-		convert2annovar = "/data/ngs/annovar/lib/convert2annovar.pl";
-
-		super.gatkCommand = "perl " + convert2annovar + " -format vcf4old -includeinfo ${files[0]} > ${files[1]}";
+		super.gatkCommand = "perl " + super.locate("convert2annovar.pl") + " -format vcf4old -includeinfo ${files[0]} > ${files[1]}";
 
 		super.parallelPipe(sc, parameters);
 	}
@@ -127,15 +119,9 @@ public class CallsetRefinement extends AbstractGATKSpark {
 		for (String field : headerFields.subList(9, headerFields.size())	)	//discarding the first 9 fields, in order to obtain only the sample name
 			parameters.add(this.outFolder + field + "converted.ann|TODO");	//TODO modify the script in order to accept a single input
 
-		//TODO locate output is not captured: try to resolve in order to find dynamically in the FS the position of these files:
-		String table_annovar = super.exec("locate -br '^table_annovar.pl$'");
-		table_annovar = "/data/ngs/annovar/lib/table_annovar.pl";
-		String humandb = super.exec("locate -br '^humandb$'");
-		humandb = "/data/ngs/annovar/humandb";
-
-		super.gatkCommand = "perl " + table_annovar + " -remove -otherinfo -buildver hg19 "
+		super.gatkCommand = "perl " + super.locate("table_annovar.pl") + " -remove -otherinfo -buildver hg19 "
 				+ " -protocol knownGene,ensGene,refGene,phastConsElements46way,genomicSuperDups,esp6500si_all,1000g2012apr_all,cg69,snp137,ljb26_all "
-				+ " -operation g,g,g,r,r,f,f,f,f,f ${files[0]} " + humandb;
+				+ " -operation g,g,g,r,r,f,f,f,f,f ${files[0]} " + super.locate("humandb");
 
 		super.parallelPipe(sc, parameters);
 	}
@@ -147,11 +133,7 @@ public class CallsetRefinement extends AbstractGATKSpark {
 		for (String field : headerFields.subList(9, headerFields.size())	)	//discarding the first 9 fields, in order to obtain only the sample name
 			parameters.add(field + "|" + this.outFolder + field + "converted.ann.hg19_multianno.txt|" + this.outFolder + field + "igm_anno.txt");	
 
-		//TODO locate output is not captured: try to resolve in order to find dynamically in the FS the position of these files:
-		String annotate = super.exec("locate -br '^annotate.pl$'");
-		annotate = "/data/ngs/IGM-Anno/src/main/annotate.pl";
-
-		super.gatkCommand = "perl " + annotate + " -samples ${files[0]} "
+		super.gatkCommand = "perl " + super.locate("annotate.pl") + " -samples ${files[0]} "
 				+ " -avoutput ${files[1]} -out ${files[2]} ";
 
 		super.parallelPipe(sc, parameters);

@@ -60,12 +60,24 @@ public abstract class AbstractGATKSpark {
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-			while ((line = br.readLine()) != null) {
-				System.out.println(line);
+			while ((line = br.readLine()) != null)
 				output += line + "\n";
-			}
 		} catch (IOException e) { e.printStackTrace(); }
 		return output;
+	}
+	
+	/**
+	 * 
+	 * @param fileName
+	 * @return Path of the first occurrence in FileSystem of fileName.
+	 * Prints error if there is not any fileName in FileSystem
+	 */
+	protected String locate(String fileName) {
+		String path = this.exec("locate -br ^" + fileName + "$ -n 1").split("\n")[0];
+		if(path.isEmpty())
+			System.err.println("Resource not found in the File System, please provide it:\t" + fileName);
+		
+		return path;
 	}
 
 	/**

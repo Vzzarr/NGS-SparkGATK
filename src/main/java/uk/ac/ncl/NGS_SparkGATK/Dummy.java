@@ -19,21 +19,12 @@ import org.apache.commons.io.FileUtils;
 public class Dummy {
 
 	public static void main(String[] args) throws IOException {
-	
-		String header = "#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	PFC_0028_SW_CGTACG_R	PFC_0029_IUH_AGTTCC_R	PFC_0030_MSt_GAGTGG_R	PFC_0031_DR_TTAGGC_R	PFC_0032_IMc_CAGATC_R	PFC_0033_MH_AGTTCC_R";
 
-		List<String> headerFields = Arrays.asList(header.split("\t"));
-		headerFields = headerFields.subList(9, headerFields.size());	//test it
-
-		for (String field : headerFields) {
-			field = "cane|" + field;
-			System.out.println(field);
-		}
-//		String command = "ls -l";
-//		exec(command);
+		String command = "locate -br ^target$ -n 1";
+		String cane = exec(command);
 //		System.out.println(cane);
 	}
-//	locate -br '^target$'
+//	locate -br \'^target$\'
 	   
 	
 	

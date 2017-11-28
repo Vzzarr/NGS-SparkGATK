@@ -3,10 +3,7 @@ package uk.ac.ncl.NGS_SparkGATK;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 
-import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.BQSRPipelineSpark;
-import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.BwaAndMarkDuplicatesPipelineSpark;
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.CallsetRefinement;
-import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.ExonicFilter;
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.FastqToSam;
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.VariantDiscovery;
 
@@ -38,21 +35,6 @@ public class Pipeline {
 	public Pipeline(String[] arguments) {
 		this.arguments = arguments;
 	}
-
-	//testing BwaAndMarkDuplicatesPipelineSpark
-	/*public Pipeline(String gatkPath, String inFolder, String referenceFolder) {
-		this.gatkPath = gatkPath;
-		this.inFiles = inFolder;
-		this.referenceFolder = referenceFolder;
-	}*/
-
-	//testing BQSRPipelineSpark
-	/*public Pipeline(String gatkPath, String inFolder, String referenceFolder, String knownSites) {
-		this.gatkPath = gatkPath;
-		this.inFiles = inFolder;
-		this.referenceFolder = referenceFolder;
-		this.knownSites = knownSites;
-	}*/
 
 	/*public Pipeline(String picardPath, String gatkPath, String inFiles, String referenceFolder, String knownSites, String outFolder) {
 		this.picardPath = picardPath;
@@ -100,7 +82,6 @@ public class Pipeline {
 		SparkConf conf = new SparkConf().setAppName(this.getClass().getName());
 		JavaSparkContext sc = new JavaSparkContext(conf);
 
-		//FastqToSam
 		switch (this.arguments[0]) {
 		case "FastqToSam":
 			if(this.arguments.length != 4)
@@ -125,13 +106,6 @@ public class Pipeline {
 			cf.run(sc);
 			break;
 		
-		case "ExonicFilter":
-			if(this.arguments.length != 3)
-				System.err.println("For ExonicFilter expected a <inFilePath> and an <outFilePath>");
-			ExonicFilter ef = new ExonicFilter(this.arguments[1], this.arguments[2]);
-			ef.run(sc);
-			break;
-		
 		default:
 			System.err.println("Usage:\n"
 					+ "\tFirst Parameter:\tFastqToSam\tSplitterDeNovos\tExonicFilter");
@@ -140,9 +114,7 @@ public class Pipeline {
 
 		//JavaPairRDD<String, String> ubam = sc.wholeTextFiles(outFolder);
 
-
 		sc.close();
 		sc.stop();
 	}
-
 }

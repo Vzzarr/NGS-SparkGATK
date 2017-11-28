@@ -56,18 +56,12 @@ public class VariantDiscovery extends AbstractGATKSpark {
 
 	/*SNP*/
 	private void variantRecalibratorSNP(JavaSparkContext sc) {
-		//TODO locate output is not captured: try to resolve in order to find dynamically in the FS the position of these files:
-		String hapmap3_3 = super.exec("locate -br '^hapmap_3.3.hg19.vcf$'");
-		String kG_omni2_5 = super.exec("locate -br '^1000G_omni2.5.hg19.vcf$'");
-		String kG_phase1_indels = super.exec("locate -br '^1000G_phase1.indels.hg19.sites.vcf$'");
-		String dbsnp_138 = super.exec("locate -br '^dbsnp_138.hg19.vcf$'");
-
 		super.gatkCommand = "java -jar ${files[0]} -T VariantRecalibrator -nt " + this.availableProcessors +
 				" -R ${files[1]} -input ${files[2]} " + 
-				" -resource:hapmap,known=false,training=true,truth=true,prior=15.0 /data/ngs/hapmap-3.3-hg19/hapmap_3.3.hg19.vcf" + hapmap3_3 + 
-				" -resource:omni,known=false,training=true,truth=true,prior=12.0 /data/ngs/omni-2.5-hg19/1000G_omni2.5.hg19.vcf" + kG_omni2_5 + 
-				" -resource:1000G,known=false,training=true,truth=false,prior=10.0 /data/ngs/1000G_phase1/1000G_phase1.indels.hg19.sites.vcf" + kG_phase1_indels + 
-				" -resource:dbsnp,known=true,training=false,truth=false,prior=2.0 /data/ngs/dbsnp1.3.8/dbsnp_138.hg19.vcf" + dbsnp_138 + 
+				" -resource:hapmap,known=false,training=true,truth=true,prior=15.0 " + super.locate("hapmap_3.3.hg19.vcf") + 
+				" -resource:omni,known=false,training=true,truth=true,prior=12.0 " + super.locate("1000G_omni2.5.hg19.vcf") + 
+				" -resource:1000G,known=false,training=true,truth=false,prior=10.0 " + super.locate("1000G_phase1.indels.hg19.sites.vcf") + 
+				" -resource:dbsnp,known=true,training=false,truth=false,prior=2.0 " + super.locate("dbsnp_138.hg19.vcf") + 
 				" -an DP -an QD -an FS -an SOR -an MQ -an MQRankSum -an ReadPosRankSum" + 
 				" -mode SNP" + 
 				" -tranche 100.0 -tranche 99.9 -tranche 99.0 -tranche 90.0" + 
@@ -99,17 +93,12 @@ public class VariantDiscovery extends AbstractGATKSpark {
 
 	}
 
-
 	/*INDEL*/	
 	private void variantRecalibratorINDEL(JavaSparkContext sc) {
-		//TODO locate output is not captured: try to resolve in order to find dinamically in the FS the position of these files:
-		String Mills_and_1000G_gold_standard = super.exec("locate -br '^Mills_and_1000G_gold_standard.indels.hg19.vcf$'");
-		String dbsnp_138 = super.exec("locate -br '^dbsnp_138.hg19.vcf$'");
-		
 		super.gatkCommand = "java -jar ${files[0]} -T VariantRecalibrator -nt " + this.availableProcessors + 
 				" -R ${files[1]} -input ${files[2]} " + 
-				" -resource:mills,known=false,training=true,truth=true,prior=12.0 /data/ngs/mills_and_1000G-hg19/Mills_and_1000G_gold_standard.indels.hg19.vcf" + Mills_and_1000G_gold_standard +
-				" -resource:dbsnp,known=true,training=false,truth=false,prior=2.0 /data/ngs/dbsnp1.3.8/dbsnp_138.hg19.vcf" + dbsnp_138 +
+				" -resource:mills,known=false,training=true,truth=true,prior=12.0 " + super.locate("Mills_and_1000G_gold_standard.indels.hg19.vcf") +
+				" -resource:dbsnp,known=true,training=false,truth=false,prior=2.0 " + super.locate("dbsnp_138.hg19.vcf") +
 				" -an QD -an DP -an FS -an SOR -an MQRankSum -an ReadPosRankSum " + 
 				" -mode INDEL " + 
 				" -tranche 100.0 -tranche 99.9 -tranche 99.0 -tranche 90.0 --maxGaussians 4" + 
