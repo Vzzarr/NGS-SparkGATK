@@ -19,12 +19,14 @@ public class FastqToSam extends AbstractGATKSpark {
 		this.picardPath = picardPath;
 		this.inFiles = inFiles;
 		this.outFolder = outFolder;
-		super.gatkCommand = "java -Xmx8G -jar ${files[0]} FastqToSam FASTQ=${files[1]} FASTQ2=${files[2]} OUTPUT=${files[3]} READ_GROUP_NAME=H0164.2 SAMPLE_NAME=${files[4]} LIBRARY_NAME=PFC PLATFORM_UNIT=H0164ALXX140820.2 PLATFORM=illumina SEQUENCING_CENTER=BI\n";
-		//white spaces at the beginning of the command are already in the Abstract Class
 	}
 
 	@Override
 	public void run(JavaSparkContext sc) {
+		super.gatkCommand = "java -Xmx8G -jar ${files[0]} FastqToSam FASTQ=${files[1]} FASTQ2=${files[2]} OUTPUT=${files[3]} "
+				+ " READ_GROUP_NAME=H0164.2 SAMPLE_NAME=${files[4]} LIBRARY_NAME=PFC PLATFORM_UNIT=H0164ALXX140820.2 "
+				+ " PLATFORM=illumina SEQUENCING_CENTER=BI\n";
+
 		List<String> fastq_r1_r2 = new LinkedList<>();
 
 		String[] filesPath = inFiles.split(",");
@@ -36,7 +38,8 @@ public class FastqToSam extends AbstractGATKSpark {
 			
 			String commonPrefix = greatestCommonPrefix(pairedEnd_r1.substring(pairedEnd_r1.lastIndexOf("/") + 1), 
 					pairedEnd_r2.substring(pairedEnd_r2.lastIndexOf("/") + 1));
-			fastq_r1_r2.add(picardPath + "|" + pairedEnd_r1 + "|" + pairedEnd_r2 + "|" + outFolder + commonPrefix + "_fastqtosam.bam" + "|" + commonPrefix);
+			fastq_r1_r2.add(picardPath + "|" + pairedEnd_r1 + "|" + pairedEnd_r2 + "|" + 
+					outFolder + commonPrefix + "_fastqtosam.bam" + "|" + commonPrefix);
 			i++;
 		}
 
