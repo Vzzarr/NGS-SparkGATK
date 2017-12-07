@@ -11,20 +11,12 @@ IGM_ANNO_FOLDER=$9
 #################################################################
 #CREATE DIRECTORIES
 dir_prepro=PREPROCESSING/
-if [ ! -d "$OUT_FOLDER$dir_prepro" ]; then
-	mkdir $OUT_FOLDER$dir_prepro
-fi
-
 dir_vardis=VARIANTDISCOVERY/
-if [ ! -d "$OUT_FOLDER$dir_vardis" ]; then
-	mkdir $OUT_FOLDER$dir_vardis
-fi
-
 dir_callref=CALLSETREFINEMENT/
-if [ ! -d "$OUT_FOLDER$dir_callref" ]; then
-	mkdir $OUT_FOLDER$dir_callref
-fi
 
+mkdir -p $OUT_FOLDER$dir_prepro
+mkdir -p $OUT_FOLDER$dir_vardis
+mkdir -p $OUT_FOLDER$dir_callref
 
 np=$(nproc)
 #################################################################
@@ -59,7 +51,8 @@ recalibrated_postCGP_Gfiltered_deNovos=recalibratedVariants.postCGP.Gfiltered.de
 #   GENEREATING uBAM FROM FASTQ FILES
 
 #spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar FastqToSam $PICARD_PATH $IN_FILES $OUT_FOLDER$dir_prepro
-: <<'COMMENT'
+#spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master spark://127.0.0.1:7077 NGS-SparkGATK.jar FastqToSam $PICARD_PATH $IN_FILES $OUT_FOLDER$dir_prepro
+
 
 #PRODUCED_UBAM=${#files[@]} / 2
 
@@ -68,6 +61,7 @@ recalibrated_postCGP_Gfiltered_deNovos=recalibratedVariants.postCGP.Gfiltered.de
 #spark_params="-- --sparkRunner SPARK --sparkMaster local[*] --num-executors 5 --executor-cores 2 --executor-memory 4g"	#specify input on HDFS
 #spark_params=""
 
+: <<'COMMENT'
 
 #################################################################
 #   BwaAndMarkDuplicatesPipelineSpark
@@ -81,6 +75,8 @@ do
 	--disableSequenceDictionaryValidation true \
 	--output $output 
 done
+
+
 
 #################################################################
 #   BQSRPipelineSpark
@@ -104,6 +100,7 @@ do
 	--disableSequenceDictionaryValidation true	\
 	$known										
 done
+COMMENT
 
 #################################################################
 #   HaplotypeCallerSpark
@@ -116,9 +113,8 @@ do
 	--output $output							\
 	--emitRefConfidence GVCF					
 done
-COMMENT
 
-spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar VariantDiscovery $GATK_PATH_3_8 $REFERENCE_FOLDER*.fasta $OUT_FOLDER$dir_prepro $OUT_FOLDER$dir_vardis
+#spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] NGS-SparkGATK.jar VariantDiscovery $GATK_PATH_3_8 $REFERENCE_FOLDER*.fasta $OUT_FOLDER$dir_prepro $OUT_FOLDER$dir_vardis
 
 
 : <<'COMMENT'

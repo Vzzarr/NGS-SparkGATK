@@ -3,8 +3,10 @@ package uk.ac.ncl.NGS_SparkGATK;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 
+import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.AbstractGATKSpark;
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.CallsetRefinement;
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.FastqToSam;
+import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.HelloWorld;
 import uk.ac.ncl.NGS_SparkGATK.gatk_tools_parallel.VariantDiscovery;
 
 
@@ -81,7 +83,9 @@ public class Pipeline {
 	private void run() {
 		SparkConf conf = new SparkConf().setAppName(this.getClass().getName());
 		JavaSparkContext sc = new JavaSparkContext(conf);
-
+		
+//		AbstractGATKSpark gatk = Class.forName(this.arguments[0]);
+		
 		switch (this.arguments[0]) {
 		case "FastqToSam":
 			if(this.arguments.length != 4)
@@ -97,7 +101,13 @@ public class Pipeline {
 			VariantDiscovery vd = new VariantDiscovery(this.arguments[1], this.arguments[2], this.arguments[3], this.arguments[4]);
 			vd.run(sc);
 			break;
-			
+			//TODO delete Hello World
+		case "HelloWorld":
+			if(this.arguments.length != 3)
+				System.err.println("For HelloWorld expected <inputFilePath> <outputFilePath>");
+			HelloWorld hw = new HelloWorld(this.arguments[1], this.arguments[2]);
+			hw.run(sc);
+			break;
 		case "CallsetRefinement":
 			if(this.arguments.length != 5)
 				System.err.println("For CallsetRefinement expected <gatk3_8path> <referenceFile> (.fasta) "
