@@ -1,4 +1,4 @@
-version: '3' 
+version: '3.2' 
 services:
   spark-master:
     image: vzzarr/spark-master:gatk
@@ -14,6 +14,9 @@ services:
       - 7077:7077
     env_file:
       - ./hadoop-swarm.env
+    volumes:
+      - /data0/reference/hg19-ucsc/:/reference/hg19-ucsc/
+      - /data0/fastq/:/fastq/
   spark-worker:
     image: bde2020/spark-worker:2.1.0-hadoop2.8-hive-java8
     networks:
