@@ -17,6 +17,8 @@ services:
     volumes:
       - /data0/reference/hg19-ucsc/:/reference/hg19-ucsc/
       - /data0/fastq/:/fastq/
+      - ../../:/NGS-SparkGATK/
+      - /data/ngs/:/ngs/
   spark-worker:
     image: bde2020/spark-worker:2.1.0-hadoop2.8-hive-java8
     networks:
