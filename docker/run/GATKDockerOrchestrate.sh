@@ -1,16 +1,28 @@
 #!/bin/bash
+GATK_PATH=/gatk/gatk
+REFERENCE_FOLDER=/reference/hg19-ucsc/
 
-#converting fastq to ubam file
 spark_masterID=`sudo docker container ls | awk '/spark-master/ {print $1}'`
-#sudo docker exec -it $spark_masterID /NGS-SparkGATK/docker/run/f2s.sh
+namenodeID=`sudo docker container ls | awk '/hadoop-namenode/ {print $1}'`
+
+: <<'COMMENT'
+#converting fastq to ubam file
+sudo docker exec -it $spark_masterID /NGS-SparkGATK/docker/run/fastq2sam.sh
 
 #loading file to HDFS
-namenodeID=`sudo docker container ls | awk '/hadoop-namenode/ {print $1}'`
-#sudo docker exec -it $namenodeID hdfs dfs -mkdir /PREPROCESSING
+sudo docker exec -it $namenodeID hdfs dfs -mkdir /output/
+sudo docker exec -it $namenodeID hdfs dfs -mkdir /output/PREPROCESSING/
 
-for ubam in /NGS-SparkGATK/docker/run/output/*_fastqtosam.bam	#TODO resolve issue here
+for ubam in output/PREPROCESSING/*_fastqtosam.bam
 do
-	sudo docker exec -it $namenodeID hdfs dfs -put $ubam /PREPROCESSING
+	sudo docker exec -it $namenodeID hdfs dfs -put $ubam /
 done
+
+COMMENT
+
+#################################################################
+#   BwaAndMarkDuplicatesPipelineSpark
+sudo docker exec -it $spark_masterID bash /NGS-SparkGATK/docker/run/preprocessing.sh
+
 
 

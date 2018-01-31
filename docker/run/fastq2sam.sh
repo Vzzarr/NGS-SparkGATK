@@ -1,7 +1,7 @@
 #!/bin/bash
-PICARD_PATH=$1
-IN_FILES=$2
-OUT_FOLDER=$3
+PICARD_PATH=/picard.jar
+IN_FILES=/fastq/chr21_1.fq.gz,/fastq/chr21_2.fq.gz
+OUT_FOLDER=/NGS-SparkGATK/docker/run/output/
 #################################################################
 #CREATE DIRECTORIES
 dir_prepro=PREPROCESSING/

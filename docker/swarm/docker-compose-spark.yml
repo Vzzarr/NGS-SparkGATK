@@ -1,7 +1,7 @@
 version: '3.2' 
 services:
   spark-master:
-    image: vzzarr/spark-master:gatk
+    image: gatk_env
     networks:
       - core
     deploy:
