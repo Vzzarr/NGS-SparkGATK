@@ -1,4 +1,12 @@
+(credits to: https://github.com/big-data-europe/docker-hadoop-spark-workbench)
 # Running Hadoop and Spark in Swarm cluster
+
+
+Initialize the Swarm:
+```
+sudo docker swarm init
+```
+and use generated output to join other nodes to the Swarm.
 
 Create an overlay network:
 ```
