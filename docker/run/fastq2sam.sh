@@ -1,24 +1,9 @@
 #!/bin/bash
-PICARD_PATH=/picard.jar
-IN_FILES=/fastq/chr21_1.fq.gz,/fastq/chr21_2.fq.gz
-OUT_FOLDER=/NGS-SparkGATK/docker/run/output/
-#################################################################
-#CREATE DIRECTORIES
-dir_prepro=PREPROCESSING/
-dir_vardis=VARIANTDISCOVERY/
-dir_callref=CALLSETREFINEMENT/
-
-mkdir -p $OUT_FOLDER$dir_prepro
-mkdir -p $OUT_FOLDER$dir_vardis
-mkdir -p $OUT_FOLDER$dir_callref
-
-
-#################################
-#		PRE-PROCESSING			#
-#################################
+PICARD_PATH=$1
+IN_FILES=$2
+OUT_FOLDER=$3
 
 #################################################################
 #   GENEREATING uBAM FROM FASTQ FILES
-
-/spark/bin/spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] /NGS-SparkGATK/docker/run/NGS-SparkGATK.jar FastqToSam $PICARD_PATH $IN_FILES $OUT_FOLDER$dir_prepro
+spark-submit --class uk.ac.ncl.NGS_SparkGATK.Pipeline --master local[*] /NGS-SparkGATK/docker/run/NGS-SparkGATK.jar FastqToSam $PICARD_PATH $IN_FILES $OUT_FOLDER
 

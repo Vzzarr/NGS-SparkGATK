@@ -1,0 +1,481 @@
+mkdir: cannot create directory '/NGS-SparkGATK': Permission denied
+mkdir: cannot create directory '/NGS-SparkGATK': Permission denied
+mkdir: cannot create directory '/NGS-SparkGATK': Permission denied
+Using GATK jar /gatk/build/libs/gatk-spark.jar
+Running:
+    spark-submit --master spark://21e5acf7a0d6:7077 --conf spark.yarn.executor.memoryOverhead=600 --conf spark.kryoserializer.buffer.max=512m --conf spark.executor.extraJavaOptions=-DGATK_STACKTRACE_ON_USER_EXCEPTION=true -Dsamjdk.use_async_io_read_samtools=false -Dsamjdk.use_async_io_write_samtools=false -Dsamjdk.use_async_io_write_tribble=false -Dsamjdk.compression_level=1  --conf spark.driver.userClassPathFirst=false --conf spark.driver.maxResultSize=0 --conf spark.driver.extraJavaOptions=-DGATK_STACKTRACE_ON_USER_EXCEPTION=true -Dsamjdk.use_async_io_read_samtools=false -Dsamjdk.use_async_io_write_samtools=false -Dsamjdk.use_async_io_write_tribble=false -Dsamjdk.compression_level=1  --conf spark.io.compression.codec=lzf --driver-memory 30g --executor-cores 4 --executor-memory 15g /gatk/build/libs/gatk-spark.jar BwaAndMarkDuplicatesPipelineSpark --input hdfs://namenode:8020/PREPROCESSING/PFC_0028_SW_CGTACG_R_fastqtosam.bam --reference hdfs://namenode:8020/hg19-ucsc/ucsc.hg19.fasta --disable-sequence-dictionary-validation true --output hdfs://namenode:8020/PREPROCESSING/PFC_0028_SW_CGTACG_R_dedup_reads.bam --spark-master spark://21e5acf7a0d6:7077
+17:26:01.483 WARN  SparkContextFactory - Environment variables HELLBENDER_TEST_PROJECT and HELLBENDER_JSON_SERVICE_ACCOUNT_KEY must be set or the GCS hadoop connector will not be configured properly
+17:26:01.668 INFO  NativeLibraryLoader - Loading libgkl_compression.so from jar:file:/gatk/build/libs/gatk-spark.jar!/com/intel/gkl/native/libgkl_compression.so
+17:26:01.840 INFO  BwaAndMarkDuplicatesPipelineSpark - ------------------------------------------------------------
+17:26:01.841 INFO  BwaAndMarkDuplicatesPipelineSpark - The Genome Analysis Toolkit (GATK) v4.0.1.1-7-g2efffce-SNAPSHOT
+17:26:01.841 INFO  BwaAndMarkDuplicatesPipelineSpark - For support and documentation go to https://software.broadinstitute.org/gatk/
+17:26:01.842 INFO  BwaAndMarkDuplicatesPipelineSpark - Executing as root@21e5acf7a0d6 on Linux v4.4.0-96-generic amd64
+17:26:01.842 INFO  BwaAndMarkDuplicatesPipelineSpark - Java runtime: OpenJDK 64-Bit Server VM v1.8.0_111-8u111-b14-2~bpo8+1-b14
+17:26:01.842 INFO  BwaAndMarkDuplicatesPipelineSpark - Start Date/Time: February 6, 2018 5:26:01 PM UTC
+17:26:01.842 INFO  BwaAndMarkDuplicatesPipelineSpark - ------------------------------------------------------------
+17:26:01.842 INFO  BwaAndMarkDuplicatesPipelineSpark - ------------------------------------------------------------
+17:26:01.843 INFO  BwaAndMarkDuplicatesPipelineSpark - HTSJDK Version: 2.14.1
+17:26:01.843 INFO  BwaAndMarkDuplicatesPipelineSpark - Picard Version: 2.17.2
+17:26:01.843 INFO  BwaAndMarkDuplicatesPipelineSpark - HTSJDK Defaults.COMPRESSION_LEVEL : 1
+17:26:01.843 INFO  BwaAndMarkDuplicatesPipelineSpark - HTSJDK Defaults.USE_ASYNC_IO_READ_FOR_SAMTOOLS : false
+17:26:01.844 INFO  BwaAndMarkDuplicatesPipelineSpark - HTSJDK Defaults.USE_ASYNC_IO_WRITE_FOR_SAMTOOLS : true
+17:26:01.844 INFO  BwaAndMarkDuplicatesPipelineSpark - HTSJDK Defaults.USE_ASYNC_IO_WRITE_FOR_TRIBBLE : false
+17:26:01.844 INFO  BwaAndMarkDuplicatesPipelineSpark - Deflater: IntelDeflater
+17:26:01.844 INFO  BwaAndMarkDuplicatesPipelineSpark - Inflater: IntelInflater
+17:26:01.844 INFO  BwaAndMarkDuplicatesPipelineSpark - GCS max retries/reopens: 20
+17:26:01.844 INFO  BwaAndMarkDuplicatesPipelineSpark - Using google-cloud-java patch 6d11bef1c81f885c26b2b56c8616b7a705171e4f from https://github.com/droazen/google-cloud-java/tree/dr_all_nio_fixes
+17:26:01.844 INFO  BwaAndMarkDuplicatesPipelineSpark - Initializing engine
+17:26:01.844 INFO  BwaAndMarkDuplicatesPipelineSpark - Done initializing engine
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+18/02/06 17:26:01 INFO SparkContext: Running Spark version 2.2.1
+18/02/06 17:26:02 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+18/02/06 17:26:02 INFO SparkContext: Submitted application: BwaAndMarkDuplicatesPipelineSpark
+18/02/06 17:26:02 INFO SecurityManager: Changing view acls to: root
+18/02/06 17:26:02 INFO SecurityManager: Changing modify acls to: root
+18/02/06 17:26:02 INFO SecurityManager: Changing view acls groups to: 
+18/02/06 17:26:02 INFO SecurityManager: Changing modify acls groups to: 
+18/02/06 17:26:02 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(root); groups with view permissions: Set(); users  with modify permissions: Set(root); groups with modify permissions: Set()
+18/02/06 17:26:02 INFO Utils: Successfully started service 'sparkDriver' on port 37119.
+18/02/06 17:26:02 INFO SparkEnv: Registering MapOutputTracker
+18/02/06 17:26:02 INFO SparkEnv: Registering BlockManagerMaster
+18/02/06 17:26:02 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+18/02/06 17:26:02 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+18/02/06 17:26:02 INFO DiskBlockManager: Created local directory at /tmp/root/blockmgr-53f5d57d-95ec-41df-a710-0559009f87ac
+18/02/06 17:26:02 INFO MemoryStore: MemoryStore started with capacity 15.8 GB
+18/02/06 17:26:02 INFO SparkEnv: Registering OutputCommitCoordinator
+18/02/06 17:26:02 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+18/02/06 17:26:02 INFO SparkUI: Bound SparkUI to 0.0.0.0, and started at http://10.0.0.13:4040
+18/02/06 17:26:02 INFO SparkContext: Added JAR file:/gatk/build/libs/gatk-spark.jar at spark://10.0.0.13:37119/jars/gatk-spark.jar with timestamp 1517937962949
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://21e5acf7a0d6:7077...
+18/02/06 17:26:03 INFO TransportClientFactory: Successfully created connection to 21e5acf7a0d6/10.0.0.13:7077 after 32 ms (0 ms spent in bootstraps)
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20180206172603-0004
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20180206172603-0004/0 on worker-20180206152522-10.0.0.8-37267 (10.0.0.8:37267) with 4 cores
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Granted executor ID app-20180206172603-0004/0 on hostPort 10.0.0.8:37267 with 4 cores, 15.0 GB RAM
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20180206172603-0004/1 on worker-20180206152522-10.0.0.8-37267 (10.0.0.8:37267) with 4 cores
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Granted executor ID app-20180206172603-0004/1 on hostPort 10.0.0.8:37267 with 4 cores, 15.0 GB RAM
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20180206172603-0004/2 on worker-20180206152522-10.0.0.11-38361 (10.0.0.11:38361) with 4 cores
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Granted executor ID app-20180206172603-0004/2 on hostPort 10.0.0.11:38361 with 4 cores, 15.0 GB RAM
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20180206172603-0004/3 on worker-20180206152522-10.0.0.11-38361 (10.0.0.11:38361) with 4 cores
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Granted executor ID app-20180206172603-0004/3 on hostPort 10.0.0.11:38361 with 4 cores, 15.0 GB RAM
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20180206172603-0004/4 on worker-20180206152521-10.0.0.7-41114 (10.0.0.7:41114) with 4 cores
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Granted executor ID app-20180206172603-0004/4 on hostPort 10.0.0.7:41114 with 4 cores, 15.0 GB RAM
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20180206172603-0004/5 on worker-20180206152521-10.0.0.7-41114 (10.0.0.7:41114) with 4 cores
+18/02/06 17:26:03 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 33989.
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Granted executor ID app-20180206172603-0004/5 on hostPort 10.0.0.7:41114 with 4 cores, 15.0 GB RAM
+18/02/06 17:26:03 INFO NettyBlockTransferService: Server created on 10.0.0.13:33989
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20180206172603-0004/6 on worker-20180206152522-10.0.0.9-39955 (10.0.0.9:39955) with 4 cores
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Granted executor ID app-20180206172603-0004/6 on hostPort 10.0.0.9:39955 with 4 cores, 15.0 GB RAM
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20180206172603-0004/7 on worker-20180206152522-10.0.0.9-39955 (10.0.0.9:39955) with 4 cores
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Granted executor ID app-20180206172603-0004/7 on hostPort 10.0.0.9:39955 with 4 cores, 15.0 GB RAM
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20180206172603-0004/8 on worker-20180206152520-10.0.0.10-35393 (10.0.0.10:35393) with 4 cores
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Granted executor ID app-20180206172603-0004/8 on hostPort 10.0.0.10:35393 with 4 cores, 15.0 GB RAM
+18/02/06 17:26:03 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20180206172603-0004/9 on worker-20180206152520-10.0.0.10-35393 (10.0.0.10:35393) with 4 cores
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: Granted executor ID app-20180206172603-0004/9 on hostPort 10.0.0.10:35393 with 4 cores, 15.0 GB RAM
+18/02/06 17:26:03 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 10.0.0.13, 33989, None)
+18/02/06 17:26:03 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.13:33989 with 15.8 GB RAM, BlockManagerId(driver, 10.0.0.13, 33989, None)
+18/02/06 17:26:03 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 10.0.0.13, 33989, None)
+18/02/06 17:26:03 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 10.0.0.13, 33989, None)
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20180206172603-0004/4 is now RUNNING
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20180206172603-0004/0 is now RUNNING
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20180206172603-0004/1 is now RUNNING
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20180206172603-0004/5 is now RUNNING
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20180206172603-0004/6 is now RUNNING
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20180206172603-0004/2 is now RUNNING
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20180206172603-0004/7 is now RUNNING
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20180206172603-0004/3 is now RUNNING
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20180206172603-0004/8 is now RUNNING
+18/02/06 17:26:03 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20180206172603-0004/9 is now RUNNING
+18/02/06 17:26:03 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+18/02/06 17:26:03 INFO GoogleHadoopFileSystemBase: GHFS version: 1.6.1-hadoop2
+18/02/06 17:26:04 INFO SparkContext: Added file hdfs://namenode:8020/hg19-ucsc/ucsc.hg19.fasta.img at hdfs://namenode:8020/hg19-ucsc/ucsc.hg19.fasta.img with timestamp 1517937964885
+18/02/06 17:26:04 INFO Utils: Fetching hdfs://namenode:8020/hg19-ucsc/ucsc.hg19.fasta.img to /tmp/root/spark-676f6468-3444-47fe-9293-834a07dc98ac/userFiles-31b2d903-0575-4c36-b3e5-dfea3c050e3e/fetchFileTemp3147952869714335568.tmp
+18/02/06 17:26:05 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Registered executor NettyRpcEndpointRef(spark-client://Executor) (10.0.0.10:54318) with ID 9
+18/02/06 17:26:05 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.10:45665 with 7.8 GB RAM, BlockManagerId(9, 10.0.0.10, 45665, None)
+18/02/06 17:26:05 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Registered executor NettyRpcEndpointRef(spark-client://Executor) (10.0.0.7:40630) with ID 5
+18/02/06 17:26:05 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Registered executor NettyRpcEndpointRef(spark-client://Executor) (10.0.0.7:40636) with ID 4
+18/02/06 17:26:05 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.7:38232 with 7.8 GB RAM, BlockManagerId(5, 10.0.0.7, 38232, None)
+18/02/06 17:26:05 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.7:43168 with 7.8 GB RAM, BlockManagerId(4, 10.0.0.7, 43168, None)
+18/02/06 17:26:05 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Registered executor NettyRpcEndpointRef(spark-client://Executor) (10.0.0.9:43182) with ID 6
+18/02/06 17:26:05 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Registered executor NettyRpcEndpointRef(spark-client://Executor) (10.0.0.10:54324) with ID 8
+18/02/06 17:26:05 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Registered executor NettyRpcEndpointRef(spark-client://Executor) (10.0.0.11:37866) with ID 3
+18/02/06 17:26:06 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.10:39053 with 7.8 GB RAM, BlockManagerId(8, 10.0.0.10, 39053, None)
+18/02/06 17:26:06 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.9:40623 with 7.8 GB RAM, BlockManagerId(6, 10.0.0.9, 40623, None)
+18/02/06 17:26:06 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Registered executor NettyRpcEndpointRef(spark-client://Executor) (10.0.0.8:42134) with ID 0
+18/02/06 17:26:06 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Registered executor NettyRpcEndpointRef(spark-client://Executor) (10.0.0.9:43190) with ID 7
+18/02/06 17:26:06 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.11:41353 with 7.8 GB RAM, BlockManagerId(3, 10.0.0.11, 41353, None)
+18/02/06 17:26:06 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Registered executor NettyRpcEndpointRef(spark-client://Executor) (10.0.0.11:37868) with ID 2
+18/02/06 17:26:06 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Registered executor NettyRpcEndpointRef(spark-client://Executor) (10.0.0.8:42142) with ID 1
+18/02/06 17:26:06 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.8:38731 with 7.8 GB RAM, BlockManagerId(0, 10.0.0.8, 38731, None)
+18/02/06 17:26:06 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.9:40779 with 7.8 GB RAM, BlockManagerId(7, 10.0.0.9, 40779, None)
+18/02/06 17:26:06 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.11:34909 with 7.8 GB RAM, BlockManagerId(2, 10.0.0.11, 34909, None)
+18/02/06 17:26:06 INFO BlockManagerMasterEndpoint: Registering block manager 10.0.0.8:38325 with 7.8 GB RAM, BlockManagerId(1, 10.0.0.8, 38325, None)
+18/02/06 17:29:35 INFO MemoryStore: Block broadcast_0 stored as values in memory (estimated size 67.5 KB, free 15.8 GB)
+18/02/06 17:29:36 INFO MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 4.5 KB, free 15.8 GB)
+18/02/06 17:29:36 INFO BlockManagerInfo: Added broadcast_0_piece0 in memory on 10.0.0.13:33989 (size: 4.5 KB, free: 15.8 GB)
+18/02/06 17:29:36 INFO SparkContext: Created broadcast 0 from broadcast at BwaSparkEngine.java:69
+18/02/06 17:29:37 INFO MemoryStore: Block broadcast_1 stored as values in memory (estimated size 275.9 KB, free 15.8 GB)
+18/02/06 17:29:37 INFO MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 23.1 KB, free 15.8 GB)
+18/02/06 17:29:37 INFO BlockManagerInfo: Added broadcast_1_piece0 in memory on 10.0.0.13:33989 (size: 23.1 KB, free: 15.8 GB)
+18/02/06 17:29:37 INFO SparkContext: Created broadcast 1 from newAPIHadoopFile at ReadsSparkSource.java:112
+18/02/06 17:29:37 INFO MemoryStore: Block broadcast_2 stored as values in memory (estimated size 69.1 KB, free 15.8 GB)
+18/02/06 17:29:37 INFO MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 4.5 KB, free 15.8 GB)
+18/02/06 17:29:37 INFO BlockManagerInfo: Added broadcast_2_piece0 in memory on 10.0.0.13:33989 (size: 4.5 KB, free: 15.8 GB)
+18/02/06 17:29:37 INFO SparkContext: Created broadcast 2 from broadcast at ReadsSparkSink.java:195
+18/02/06 17:29:37 INFO FileOutputCommitter: File Output Committer Algorithm version is 1
+18/02/06 17:29:37 INFO FileInputFormat: Total input paths to process : 1
+18/02/06 17:29:37 ERROR SparkHadoopMapReduceWriter: Aborting job job_20180206172937_0020.
+htsjdk.samtools.SAMFormatException: Does not seem like a BAM file
+	at org.seqdoop.hadoop_bam.BAMSplitGuesser.<init>(BAMSplitGuesser.java:90)
+	at org.seqdoop.hadoop_bam.BAMInputFormat.addProbabilisticSplits(BAMInputFormat.java:478)
+	at org.seqdoop.hadoop_bam.BAMInputFormat.getSplits(BAMInputFormat.java:255)
+	at org.seqdoop.hadoop_bam.AnySAMInputFormat.getSplits(AnySAMInputFormat.java:253)
+	at org.apache.spark.rdd.NewHadoopRDD.getPartitions(NewHadoopRDD.scala:125)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.UnionRDD$$anonfun$1.apply(UnionRDD.scala:84)
+	at org.apache.spark.rdd.UnionRDD$$anonfun$1.apply(UnionRDD.scala:84)
+	at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:234)
+	at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:234)
+	at scala.collection.immutable.List.foreach(List.scala:381)
+	at scala.collection.TraversableLike$class.map(TraversableLike.scala:234)
+	at scala.collection.immutable.List.map(List.scala:285)
+	at org.apache.spark.rdd.UnionRDD.getPartitions(UnionRDD.scala:84)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2082)
+	at org.apache.spark.internal.io.SparkHadoopMapReduceWriter$.write(SparkHadoopMapReduceWriter.scala:88)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1.apply$mcV$sp(PairRDDFunctions.scala:1085)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1.apply(PairRDDFunctions.scala:1085)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1.apply(PairRDDFunctions.scala:1085)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:112)
+	at org.apache.spark.rdd.RDD.withScope(RDD.scala:362)
+	at org.apache.spark.rdd.PairRDDFunctions.saveAsNewAPIHadoopDataset(PairRDDFunctions.scala:1084)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopFile$2.apply$mcV$sp(PairRDDFunctions.scala:1003)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopFile$2.apply(PairRDDFunctions.scala:994)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopFile$2.apply(PairRDDFunctions.scala:994)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:112)
+	at org.apache.spark.rdd.RDD.withScope(RDD.scala:362)
+	at org.apache.spark.rdd.PairRDDFunctions.saveAsNewAPIHadoopFile(PairRDDFunctions.scala:994)
+	at org.apache.spark.api.java.JavaPairRDD.saveAsNewAPIHadoopFile(JavaPairRDD.scala:823)
+	at org.broadinstitute.hellbender.engine.spark.datasources.ReadsSparkSink.saveAsShardedHadoopFiles(ReadsSparkSink.java:203)
+	at org.broadinstitute.hellbender.engine.spark.datasources.ReadsSparkSink.writeReadsSingle(ReadsSparkSink.java:230)
+	at org.broadinstitute.hellbender.engine.spark.datasources.ReadsSparkSink.writeReads(ReadsSparkSink.java:153)
+	at org.broadinstitute.hellbender.tools.spark.pipelines.BwaAndMarkDuplicatesPipelineSpark.runTool(BwaAndMarkDuplicatesPipelineSpark.java:65)
+	at org.broadinstitute.hellbender.engine.spark.GATKSparkTool.runPipeline(GATKSparkTool.java:387)
+	at org.broadinstitute.hellbender.engine.spark.SparkCommandLineProgram.doWork(SparkCommandLineProgram.java:30)
+	at org.broadinstitute.hellbender.cmdline.CommandLineProgram.runTool(CommandLineProgram.java:136)
+	at org.broadinstitute.hellbender.cmdline.CommandLineProgram.instanceMainPostParseArgs(CommandLineProgram.java:179)
+	at org.broadinstitute.hellbender.cmdline.CommandLineProgram.instanceMain(CommandLineProgram.java:198)
+	at org.broadinstitute.hellbender.Main.runCommandLineProgram(Main.java:153)
+	at org.broadinstitute.hellbender.Main.mainEntry(Main.java:195)
+	at org.broadinstitute.hellbender.Main.main(Main.java:277)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:775)
+	at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:180)
+	at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:205)
+	at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:119)
+	at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+18/02/06 17:29:37 INFO TorrentBroadcast: Destroying Broadcast(0) (from destroy at BwaSparkEngine.java:109)
+18/02/06 17:29:37 INFO BlockManagerInfo: Removed broadcast_0_piece0 on 10.0.0.13:33989 in memory (size: 4.5 KB, free: 15.8 GB)
+18/02/06 17:29:38 INFO SparkContext: Starting job: foreach at BwaMemIndexCache.java:84
+18/02/06 17:29:38 INFO DAGScheduler: Got job 0 (foreach at BwaMemIndexCache.java:84) with 40 output partitions
+18/02/06 17:29:38 INFO DAGScheduler: Final stage: ResultStage 0 (foreach at BwaMemIndexCache.java:84)
+18/02/06 17:29:38 INFO DAGScheduler: Parents of final stage: List()
+18/02/06 17:29:38 INFO DAGScheduler: Missing parents: List()
+18/02/06 17:29:38 INFO DAGScheduler: Submitting ResultStage 0 (ParallelCollectionRDD[21] at parallelize at BwaMemIndexCache.java:84), which has no missing parents
+18/02/06 17:29:38 INFO MemoryStore: Block broadcast_3 stored as values in memory (estimated size 2.2 KB, free 15.8 GB)
+18/02/06 17:29:38 INFO MemoryStore: Block broadcast_3_piece0 stored as bytes in memory (estimated size 1416.0 B, free 15.8 GB)
+18/02/06 17:29:38 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.13:33989 (size: 1416.0 B, free: 15.8 GB)
+18/02/06 17:29:38 INFO SparkContext: Created broadcast 3 from broadcast at DAGScheduler.scala:1006
+18/02/06 17:29:38 INFO DAGScheduler: Submitting 40 missing tasks from ResultStage 0 (ParallelCollectionRDD[21] at parallelize at BwaMemIndexCache.java:84) (first 15 tasks are for partitions Vector(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14))
+18/02/06 17:29:38 INFO TaskSchedulerImpl: Adding task set 0.0 with 40 tasks
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, 10.0.0.8, executor 0, partition 0, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 1.0 in stage 0.0 (TID 1, 10.0.0.7, executor 5, partition 1, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 2.0 in stage 0.0 (TID 2, 10.0.0.9, executor 6, partition 2, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 3.0 in stage 0.0 (TID 3, 10.0.0.11, executor 3, partition 3, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 4.0 in stage 0.0 (TID 4, 10.0.0.10, executor 9, partition 4, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 5.0 in stage 0.0 (TID 5, 10.0.0.8, executor 1, partition 5, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 6.0 in stage 0.0 (TID 6, 10.0.0.9, executor 7, partition 6, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 7.0 in stage 0.0 (TID 7, 10.0.0.7, executor 4, partition 7, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 8.0 in stage 0.0 (TID 8, 10.0.0.11, executor 2, partition 8, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 9.0 in stage 0.0 (TID 9, 10.0.0.10, executor 8, partition 9, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 10.0 in stage 0.0 (TID 10, 10.0.0.8, executor 0, partition 10, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 11.0 in stage 0.0 (TID 11, 10.0.0.7, executor 5, partition 11, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 12.0 in stage 0.0 (TID 12, 10.0.0.9, executor 6, partition 12, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 13.0 in stage 0.0 (TID 13, 10.0.0.11, executor 3, partition 13, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 14.0 in stage 0.0 (TID 14, 10.0.0.10, executor 9, partition 14, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 15.0 in stage 0.0 (TID 15, 10.0.0.8, executor 1, partition 15, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 16.0 in stage 0.0 (TID 16, 10.0.0.9, executor 7, partition 16, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 17.0 in stage 0.0 (TID 17, 10.0.0.7, executor 4, partition 17, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 18.0 in stage 0.0 (TID 18, 10.0.0.11, executor 2, partition 18, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 19.0 in stage 0.0 (TID 19, 10.0.0.10, executor 8, partition 19, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 20.0 in stage 0.0 (TID 20, 10.0.0.8, executor 0, partition 20, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 21.0 in stage 0.0 (TID 21, 10.0.0.7, executor 5, partition 21, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 22.0 in stage 0.0 (TID 22, 10.0.0.9, executor 6, partition 22, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 23.0 in stage 0.0 (TID 23, 10.0.0.11, executor 3, partition 23, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 24.0 in stage 0.0 (TID 24, 10.0.0.10, executor 9, partition 24, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 25.0 in stage 0.0 (TID 25, 10.0.0.8, executor 1, partition 25, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 26.0 in stage 0.0 (TID 26, 10.0.0.9, executor 7, partition 26, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 27.0 in stage 0.0 (TID 27, 10.0.0.7, executor 4, partition 27, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 28.0 in stage 0.0 (TID 28, 10.0.0.11, executor 2, partition 28, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 29.0 in stage 0.0 (TID 29, 10.0.0.10, executor 8, partition 29, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 30.0 in stage 0.0 (TID 30, 10.0.0.8, executor 0, partition 30, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 31.0 in stage 0.0 (TID 31, 10.0.0.7, executor 5, partition 31, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 32.0 in stage 0.0 (TID 32, 10.0.0.9, executor 6, partition 32, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 33.0 in stage 0.0 (TID 33, 10.0.0.11, executor 3, partition 33, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 34.0 in stage 0.0 (TID 34, 10.0.0.10, executor 9, partition 34, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 35.0 in stage 0.0 (TID 35, 10.0.0.8, executor 1, partition 35, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 36.0 in stage 0.0 (TID 36, 10.0.0.9, executor 7, partition 36, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 37.0 in stage 0.0 (TID 37, 10.0.0.7, executor 4, partition 37, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 38.0 in stage 0.0 (TID 38, 10.0.0.11, executor 2, partition 38, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:29:38 INFO TaskSetManager: Starting task 39.0 in stage 0.0 (TID 39, 10.0.0.10, executor 8, partition 39, PROCESS_LOCAL, 4686 bytes)
+18/02/06 17:32:27 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.9:40779 (size: 1416.0 B, free: 7.8 GB)
+18/02/06 17:32:28 INFO TaskSetManager: Finished task 6.0 in stage 0.0 (TID 6) in 170227 ms on 10.0.0.9 (executor 7) (1/40)
+18/02/06 17:32:28 INFO TaskSetManager: Finished task 16.0 in stage 0.0 (TID 16) in 170156 ms on 10.0.0.9 (executor 7) (2/40)
+18/02/06 17:32:28 INFO TaskSetManager: Finished task 26.0 in stage 0.0 (TID 26) in 170369 ms on 10.0.0.9 (executor 7) (3/40)
+18/02/06 17:32:28 INFO TaskSetManager: Finished task 36.0 in stage 0.0 (TID 36) in 170302 ms on 10.0.0.9 (executor 7) (4/40)
+18/02/06 17:37:13 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.11:34909 (size: 1416.0 B, free: 7.8 GB)
+18/02/06 17:37:14 INFO TaskSetManager: Finished task 28.0 in stage 0.0 (TID 28) in 455601 ms on 10.0.0.11 (executor 2) (5/40)
+18/02/06 17:37:14 INFO TaskSetManager: Finished task 18.0 in stage 0.0 (TID 18) in 455676 ms on 10.0.0.11 (executor 2) (6/40)
+18/02/06 17:37:14 INFO TaskSetManager: Finished task 38.0 in stage 0.0 (TID 38) in 455530 ms on 10.0.0.11 (executor 2) (7/40)
+18/02/06 17:37:14 INFO TaskSetManager: Finished task 8.0 in stage 0.0 (TID 8) in 455762 ms on 10.0.0.11 (executor 2) (8/40)
+18/02/06 17:37:15 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.8:38731 (size: 1416.0 B, free: 7.8 GB)
+18/02/06 17:37:15 INFO TaskSetManager: Finished task 30.0 in stage 0.0 (TID 30) in 456976 ms on 10.0.0.8 (executor 0) (9/40)
+18/02/06 17:37:15 INFO TaskSetManager: Finished task 10.0 in stage 0.0 (TID 10) in 457126 ms on 10.0.0.8 (executor 0) (10/40)
+18/02/06 17:37:15 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 457224 ms on 10.0.0.8 (executor 0) (11/40)
+18/02/06 17:37:15 INFO TaskSetManager: Finished task 20.0 in stage 0.0 (TID 20) in 457055 ms on 10.0.0.8 (executor 0) (12/40)
+18/02/06 17:37:16 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.8:38325 (size: 1416.0 B, free: 7.8 GB)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 25.0 in stage 0.0 (TID 25) in 458044 ms on 10.0.0.8 (executor 1) (13/40)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 35.0 in stage 0.0 (TID 35) in 457970 ms on 10.0.0.8 (executor 1) (14/40)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 5.0 in stage 0.0 (TID 5) in 458200 ms on 10.0.0.8 (executor 1) (15/40)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 15.0 in stage 0.0 (TID 15) in 458126 ms on 10.0.0.8 (executor 1) (16/40)
+18/02/06 17:37:16 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.9:40623 (size: 1416.0 B, free: 7.8 GB)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 2.0 in stage 0.0 (TID 2) in 458443 ms on 10.0.0.9 (executor 6) (17/40)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 22.0 in stage 0.0 (TID 22) in 458294 ms on 10.0.0.9 (executor 6) (18/40)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 32.0 in stage 0.0 (TID 32) in 458218 ms on 10.0.0.9 (executor 6) (19/40)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 12.0 in stage 0.0 (TID 12) in 458363 ms on 10.0.0.9 (executor 6) (20/40)
+18/02/06 17:37:16 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.11:41353 (size: 1416.0 B, free: 7.8 GB)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 13.0 in stage 0.0 (TID 13) in 458639 ms on 10.0.0.11 (executor 3) (21/40)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 23.0 in stage 0.0 (TID 23) in 458573 ms on 10.0.0.11 (executor 3) (22/40)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 33.0 in stage 0.0 (TID 33) in 458496 ms on 10.0.0.11 (executor 3) (23/40)
+18/02/06 17:37:16 INFO TaskSetManager: Finished task 3.0 in stage 0.0 (TID 3) in 458723 ms on 10.0.0.11 (executor 3) (24/40)
+18/02/06 17:38:38 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.10:45665 (size: 1416.0 B, free: 7.8 GB)
+18/02/06 17:38:39 INFO TaskSetManager: Finished task 4.0 in stage 0.0 (TID 4) in 541476 ms on 10.0.0.10 (executor 9) (25/40)
+18/02/06 17:38:39 INFO TaskSetManager: Finished task 24.0 in stage 0.0 (TID 24) in 541331 ms on 10.0.0.10 (executor 9) (26/40)
+18/02/06 17:38:39 INFO TaskSetManager: Finished task 34.0 in stage 0.0 (TID 34) in 541256 ms on 10.0.0.10 (executor 9) (27/40)
+18/02/06 17:38:39 INFO TaskSetManager: Finished task 14.0 in stage 0.0 (TID 14) in 541403 ms on 10.0.0.10 (executor 9) (28/40)
+18/02/06 17:38:41 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.7:38232 (size: 1416.0 B, free: 7.8 GB)
+18/02/06 17:38:41 INFO TaskSetManager: Finished task 21.0 in stage 0.0 (TID 21) in 543523 ms on 10.0.0.7 (executor 5) (29/40)
+18/02/06 17:38:41 INFO TaskSetManager: Finished task 11.0 in stage 0.0 (TID 11) in 543596 ms on 10.0.0.7 (executor 5) (30/40)
+18/02/06 17:38:41 INFO TaskSetManager: Finished task 1.0 in stage 0.0 (TID 1) in 543676 ms on 10.0.0.7 (executor 5) (31/40)
+18/02/06 17:38:41 INFO TaskSetManager: Finished task 31.0 in stage 0.0 (TID 31) in 543457 ms on 10.0.0.7 (executor 5) (32/40)
+18/02/06 17:39:01 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.7:43168 (size: 1416.0 B, free: 7.8 GB)
+18/02/06 17:39:01 INFO TaskSetManager: Finished task 17.0 in stage 0.0 (TID 17) in 562997 ms on 10.0.0.7 (executor 4) (33/40)
+18/02/06 17:39:01 INFO TaskSetManager: Finished task 27.0 in stage 0.0 (TID 27) in 562925 ms on 10.0.0.7 (executor 4) (34/40)
+18/02/06 17:39:01 INFO TaskSetManager: Finished task 37.0 in stage 0.0 (TID 37) in 562851 ms on 10.0.0.7 (executor 4) (35/40)
+18/02/06 17:39:01 INFO TaskSetManager: Finished task 7.0 in stage 0.0 (TID 7) in 563075 ms on 10.0.0.7 (executor 4) (36/40)
+18/02/06 17:39:22 INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on 10.0.0.10:39053 (size: 1416.0 B, free: 7.8 GB)
+18/02/06 17:39:22 INFO TaskSetManager: Finished task 39.0 in stage 0.0 (TID 39) in 583663 ms on 10.0.0.10 (executor 8) (37/40)
+18/02/06 17:39:22 INFO TaskSetManager: Finished task 19.0 in stage 0.0 (TID 19) in 583811 ms on 10.0.0.10 (executor 8) (38/40)
+18/02/06 17:39:22 INFO TaskSetManager: Finished task 9.0 in stage 0.0 (TID 9) in 583886 ms on 10.0.0.10 (executor 8) (39/40)
+18/02/06 17:39:22 INFO TaskSetManager: Finished task 29.0 in stage 0.0 (TID 29) in 583739 ms on 10.0.0.10 (executor 8) (40/40)
+18/02/06 17:39:22 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool 
+18/02/06 17:39:22 INFO DAGScheduler: ResultStage 0 (foreach at BwaMemIndexCache.java:84) finished in 583.982 s
+18/02/06 17:39:22 INFO DAGScheduler: Job 0 finished: foreach at BwaMemIndexCache.java:84, took 584.162825 s
+18/02/06 17:39:22 INFO SparkUI: Stopped Spark web UI at http://10.0.0.13:4040
+18/02/06 17:39:22 INFO StandaloneSchedulerBackend: Shutting down all executors
+18/02/06 17:39:22 INFO CoarseGrainedSchedulerBackend$DriverEndpoint: Asking each executor to shut down
+18/02/06 17:39:22 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+18/02/06 17:39:22 INFO MemoryStore: MemoryStore cleared
+18/02/06 17:39:22 INFO BlockManager: BlockManager stopped
+18/02/06 17:39:22 INFO BlockManagerMaster: BlockManagerMaster stopped
+18/02/06 17:39:22 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+18/02/06 17:39:23 INFO SparkContext: Successfully stopped SparkContext
+17:39:23.110 INFO  BwaAndMarkDuplicatesPipelineSpark - Shutting down engine
+[February 6, 2018 5:39:23 PM UTC] org.broadinstitute.hellbender.tools.spark.pipelines.BwaAndMarkDuplicatesPipelineSpark done. Elapsed time: 13.36 minutes.
+Runtime.totalMemory()=1211629568
+org.apache.spark.SparkException: Job aborted.
+	at org.apache.spark.internal.io.SparkHadoopMapReduceWriter$.write(SparkHadoopMapReduceWriter.scala:107)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1.apply$mcV$sp(PairRDDFunctions.scala:1085)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1.apply(PairRDDFunctions.scala:1085)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1.apply(PairRDDFunctions.scala:1085)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:112)
+	at org.apache.spark.rdd.RDD.withScope(RDD.scala:362)
+	at org.apache.spark.rdd.PairRDDFunctions.saveAsNewAPIHadoopDataset(PairRDDFunctions.scala:1084)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopFile$2.apply$mcV$sp(PairRDDFunctions.scala:1003)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopFile$2.apply(PairRDDFunctions.scala:994)
+	at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopFile$2.apply(PairRDDFunctions.scala:994)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:112)
+	at org.apache.spark.rdd.RDD.withScope(RDD.scala:362)
+	at org.apache.spark.rdd.PairRDDFunctions.saveAsNewAPIHadoopFile(PairRDDFunctions.scala:994)
+	at org.apache.spark.api.java.JavaPairRDD.saveAsNewAPIHadoopFile(JavaPairRDD.scala:823)
+	at org.broadinstitute.hellbender.engine.spark.datasources.ReadsSparkSink.saveAsShardedHadoopFiles(ReadsSparkSink.java:203)
+	at org.broadinstitute.hellbender.engine.spark.datasources.ReadsSparkSink.writeReadsSingle(ReadsSparkSink.java:230)
+	at org.broadinstitute.hellbender.engine.spark.datasources.ReadsSparkSink.writeReads(ReadsSparkSink.java:153)
+	at org.broadinstitute.hellbender.tools.spark.pipelines.BwaAndMarkDuplicatesPipelineSpark.runTool(BwaAndMarkDuplicatesPipelineSpark.java:65)
+	at org.broadinstitute.hellbender.engine.spark.GATKSparkTool.runPipeline(GATKSparkTool.java:387)
+	at org.broadinstitute.hellbender.engine.spark.SparkCommandLineProgram.doWork(SparkCommandLineProgram.java:30)
+	at org.broadinstitute.hellbender.cmdline.CommandLineProgram.runTool(CommandLineProgram.java:136)
+	at org.broadinstitute.hellbender.cmdline.CommandLineProgram.instanceMainPostParseArgs(CommandLineProgram.java:179)
+	at org.broadinstitute.hellbender.cmdline.CommandLineProgram.instanceMain(CommandLineProgram.java:198)
+	at org.broadinstitute.hellbender.Main.runCommandLineProgram(Main.java:153)
+	at org.broadinstitute.hellbender.Main.mainEntry(Main.java:195)
+	at org.broadinstitute.hellbender.Main.main(Main.java:277)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:775)
+	at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:180)
+	at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:205)
+	at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:119)
+	at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+Caused by: htsjdk.samtools.SAMFormatException: Does not seem like a BAM file
+	at org.seqdoop.hadoop_bam.BAMSplitGuesser.<init>(BAMSplitGuesser.java:90)
+	at org.seqdoop.hadoop_bam.BAMInputFormat.addProbabilisticSplits(BAMInputFormat.java:478)
+	at org.seqdoop.hadoop_bam.BAMInputFormat.getSplits(BAMInputFormat.java:255)
+	at org.seqdoop.hadoop_bam.AnySAMInputFormat.getSplits(AnySAMInputFormat.java:253)
+	at org.apache.spark.rdd.NewHadoopRDD.getPartitions(NewHadoopRDD.scala:125)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.UnionRDD$$anonfun$1.apply(UnionRDD.scala:84)
+	at org.apache.spark.rdd.UnionRDD$$anonfun$1.apply(UnionRDD.scala:84)
+	at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:234)
+	at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:234)
+	at scala.collection.immutable.List.foreach(List.scala:381)
+	at scala.collection.TraversableLike$class.map(TraversableLike.scala:234)
+	at scala.collection.immutable.List.map(List.scala:285)
+	at org.apache.spark.rdd.UnionRDD.getPartitions(UnionRDD.scala:84)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:35)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:252)
+	at org.apache.spark.rdd.RDD$$anonfun$partitions$2.apply(RDD.scala:250)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.rdd.RDD.partitions(RDD.scala:250)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2082)
+	at org.apache.spark.internal.io.SparkHadoopMapReduceWriter$.write(SparkHadoopMapReduceWriter.scala:88)
+	... 36 more
+18/02/06 17:39:23 INFO ShutdownHookManager: Shutdown hook called
+18/02/06 17:39:23 INFO ShutdownHookManager: Deleting directory /tmp/root/spark-676f6468-3444-47fe-9293-834a07dc98ac

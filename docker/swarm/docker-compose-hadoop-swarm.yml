@@ -18,6 +18,7 @@ services:
     ports:
       - 50070:50070
     volumes:
+      - /data0/reference/hg19-ucsc/:/reference/hg19-ucsc/
       - ../run/output/:/output
 
   datanode:
