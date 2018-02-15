@@ -20,6 +20,7 @@ services:
     volumes:
       - /data0/reference/hg19-ucsc/:/reference/hg19-ucsc/
       - ../run/output/:/output
+      - /data/ngs/:/ngs/
 
   datanode:
     image: bde2020/hadoop-datanode:1.1.0-hadoop2.8-java8

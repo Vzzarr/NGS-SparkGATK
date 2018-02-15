@@ -1,4 +1,5 @@
 #!/bin/bash
+#SparkMaster path
 PICARD_PATH=/picard.jar
 GATK_PATH=/gatk/gatk
 IN_FILES=/fastq/PFC_0028/PFC_0028_SW_CGTACG_R1_001.fastq.gz,/fastq/PFC_0028/PFC_0028_SW_CGTACG_R2_001.fastq.gz,\
@@ -7,6 +8,7 @@ IN_FILES=/fastq/PFC_0028/PFC_0028_SW_CGTACG_R1_001.fastq.gz,/fastq/PFC_0028/PFC_
 /fastq/PFC_0031/PFC_0031_DR_TTAGGC_R1_001.fastq.gz,/fastq/PFC_0031/PFC_0031_DR_TTAGGC_R2_001.fastq.gz,\
 /fastq/PFC_0032/PFC_0032_IMc_CAGATC_R1_001.fastq.gz,/fastq/PFC_0032/PFC_0032_IMc_CAGATC_R2_001.fastq.gz,\
 /fastq/PFC_0033/PFC_0033_MH_AGTTCC_R1_001.fastq.gz,/fastq/PFC_0033/PFC_0033_MH_AGTTCC_R2_001.fastq.gz
+IN_FILES=/fastq/chr21_1.fq.gz,/fastq/chr21_2.fq.gz
 
 REFERENCE_FOLDER=/reference/hg19-ucsc/
 KNOWN_SITES=/ngs/dbsnp1.3.8/dbsnp_138.hg19.vcf,/ngs/mills_and_1000G-hg19/Mills_and_1000G_gold_standard.indels.hg19.vcf
@@ -34,18 +36,27 @@ mkdir -p $OUT_FOLDER$dir_callref
 #converting fastq to ubam file
 #sudo docker exec -t $spark_masterID /NGS-SparkGATK/docker/run/fastq2sam.sh $PICARD_PATH $IN_FILES $OUT_FOLDER$dir_prepro
 
-
-#loading file to HDFS
 : <<'COMMENT'
-for ubam in output/$dir_prepro*_fastqtosam.bam
+#loading files to HDFS
+sudo docker exec -t $namenodeID hdfs dfs -put output/$dir_prepro /
+sudo docker exec -t $namenodeID hdfs dfs -put $REFERENCE_FOLDER /
+
+#loading knownSites to HDFS and preparing --knownSites field for BQSR
+sudo docker exec -t $namenodeID hdfs dfs -mkdir /known_sites
+IFS=',' read -a knownSites <<< "$KNOWN_SITES"
+known=" "
+for k in "${knownSites[@]}"
 do
-	sudo docker exec -t $namenodeID hdfs dfs -put $ubam /
+   : 
+   sudo docker exec -t $namenodeID hdfs dfs -put $k /known_sites
+   k=${k##*/}
+   known="$known --known-sites hdfs://namenode:8020/known_sites/$k "
 done
+
 COMMENT
 
-#sudo docker exec -t $namenodeID hdfs dfs -put output/$dir_prepro /
-#sudo docker exec -t $namenodeID hdfs dfs -put $REFERENCE_FOLDER /
 
-sudo docker exec -t $spark_masterID bash /NGS-SparkGATK/docker/run/pipeline.sh $GATK_PATH $REFERENCE_FOLDER $OUT_FOLDER $KNOWN_SITES
+sudo docker exec -t $spark_masterID bash /NGS-SparkGATK/docker/run/pipeline.sh $GATK_PATH $REFERENCE_FOLDER $OUT_FOLDER $known
+
 
 

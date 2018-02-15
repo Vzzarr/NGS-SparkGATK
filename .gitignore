@@ -51,3 +51,5 @@ local.properties
 .worksheet
 /target/
 docker/run/output/*
+docker/run/output_nohup/*
+docker/run/nohup.out

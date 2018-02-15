@@ -1,7 +1,7 @@
 version: '3.2' 
 services:
   spark-master:
-    image: vzzarr/spark-master:gatk_loc
+    image: vzzarr/spark-master:2.2.0-hadoop2.8-hive-java8
     networks:
       - core
     deploy:
@@ -15,6 +15,7 @@ services:
     env_file:
       - ./hadoop-swarm.env
     volumes:
+      - /data0/reference/hg19-ucsc/:/reference/hg19-ucsc/
       - /data0/fastq/:/fastq/
       - ../../:/NGS-SparkGATK/
       - /data/ngs/:/ngs/
@@ -25,12 +26,28 @@ services:
     environment:
       - SPARK_MASTER=spark://spark-master:7077
     deploy:
-      replicas: 5
-      #mode: global
+      mode: global
       restart_policy:
         condition: on-failure
     env_file:
       - ./hadoop-swarm.env
+    volumes:
+      - reference-image:/reference_image
+
+  reference:
+    image: vzzarr/reference:hg19_img
+    networks:
+      - core
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+    tty: true    #keeps the container alive
+    volumes:
+      - reference-image:/reference_image
+
+volumes:
+  reference-image:
 
 networks:
   core:
