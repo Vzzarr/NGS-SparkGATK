@@ -17,8 +17,7 @@ $GATK_PATH BwaAndMarkDuplicatesPipelineSpark --input hdfs://namenode:8020/PFC_00
 
 COMMENT
 
-#TODO calculate the right number of Spark resources		--bamPartitionSize
-
+: <<'COMMENT'
 #################################################################
 #   BwaAndMarkDuplicatesPipelineSpark
 for ubam in $OUT_FOLDER$dir_prepro*_fastqtosam.bam
@@ -26,16 +25,17 @@ do
 	ubam=${ubam##*/}	#getting only the file name without path
 	output="${ubam/_fastqtosam.bam/'_dedup_reads.bam'}"
 
-
-	$GATK_PATH BwaAndMarkDuplicatesPipelineSpark  \
+	$GATK_PATH BwaAndMarkDuplicatesPipelineSpark --bam-partition-size 4000000 \
 	--input hdfs://namenode:8020/$dir_prepro$ubam \
 	--reference hdfs://namenode:8020/hg19-ucsc/ucsc.hg19.2bit \
 	--bwa-mem-index-image /reference_image/ucsc.hg19.fasta.img \
 	--disable-sequence-dictionary-validation true \
 	--output hdfs://namenode:8020/$dir_prepro$output -- \
 	--spark-runner SPARK --spark-master spark://$SPARK_MASTER_HOST:7077 \
-	--driver-memory 30g --executor-cores 4 --executor-memory 15g
+	--driver-memory 15g --executor-cores 2 --executor-memory 8g
 done
+
+COMMENT
 
 
 #30 4 15
@@ -45,16 +45,15 @@ done
 #################################################################
 #   BQSRPipelineSpark
 #create knownsites field
-IFS=',' read -a knownSites <<< "$KNOWN_SITES"
+IFS=',' read -a knownSites <<< "$known"
 known=" "
 for k in "${knownSites[@]}"
 do
    : 
-   known="$known --known-sites $k "
+   known="$known $k "
 done
-COMMENT
 
-: <<'COMMENT'
+
 for ubam in $OUT_FOLDER$dir_prepro*_fastqtosam.bam
 do
 	ubam=${ubam##*/}
@@ -62,7 +61,7 @@ do
 	output="${ubam/_dedup_reads.bam/'_recal_reads.bam'}"
 
 
-	$GATK_PATH BQSRPipelineSpark								\
+	$GATK_PATH BQSRPipelineSpark 	\
 	--input hdfs://namenode:8020/$dir_prepro$ubam				\
 	--reference hdfs://namenode:8020/hg19-ucsc/ucsc.hg19.2bit	\
 	--output hdfs://namenode:8020/$dir_prepro$output			\
@@ -72,7 +71,7 @@ do
 	--driver-memory 10g --executor-cores 2 --executor-memory 8g
 done
 COMMENT
-: <<'COMMENT'
+
 #################################################################
 #   HaplotypeCallerSpark
 for ubam in $OUT_FOLDER$dir_prepro*_fastqtosam.bam
@@ -82,16 +81,17 @@ do
 	output="${ubam/_recal_reads.bam/'_raw_variants.g.vcf'}"
 
 	#saving on FS because the following step (GenotypeGVCFs) is not implemented in Spark
-	$GATK_PATH HaplotypeCallerSpark				\
+	$GATK_PATH HaplotypeCallerSpark							\
 	--input hdfs://namenode:8020/$dir_prepro$ubam			\
 	--reference hdfs://namenode:8020/hg19-ucsc/ucsc.hg19.2bit 		\
 	--output $OUT_FOLDER$dir_prepro$output		\
 	--emit-ref-confidence GVCF -- \
 	--spark-runner SPARK --spark-master spark://$SPARK_MASTER_HOST:7077 \
-	--driver-memory 20g --executor-cores 2 --executor-memory 8g
+	--driver-memory 30g --executor-cores 2 --executor-memory 10g
 
 done
 
+: <<'COMMENT'
 #################################
 #		VARIANT DISCOVERY		#
 #################################

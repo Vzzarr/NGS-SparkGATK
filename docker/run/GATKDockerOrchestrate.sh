@@ -36,7 +36,6 @@ mkdir -p $OUT_FOLDER$dir_callref
 #converting fastq to ubam file
 #sudo docker exec -t $spark_masterID /NGS-SparkGATK/docker/run/fastq2sam.sh $PICARD_PATH $IN_FILES $OUT_FOLDER$dir_prepro
 
-: <<'COMMENT'
 #loading files to HDFS
 sudo docker exec -t $namenodeID hdfs dfs -put output/$dir_prepro /
 sudo docker exec -t $namenodeID hdfs dfs -put $REFERENCE_FOLDER /
@@ -44,17 +43,18 @@ sudo docker exec -t $namenodeID hdfs dfs -put $REFERENCE_FOLDER /
 #loading knownSites to HDFS and preparing --knownSites field for BQSR
 sudo docker exec -t $namenodeID hdfs dfs -mkdir /known_sites
 IFS=',' read -a knownSites <<< "$KNOWN_SITES"
-known=" "
+
+known=""
 for k in "${knownSites[@]}"
 do
    : 
    sudo docker exec -t $namenodeID hdfs dfs -put $k /known_sites
    k=${k##*/}
-   known="$known --known-sites hdfs://namenode:8020/known_sites/$k "
+   known="$known,--known-sites,hdfs://namenode:8020/known_sites/$k "
 done
 
+: <<'COMMENT'
 COMMENT
-
 
 sudo docker exec -t $spark_masterID bash /NGS-SparkGATK/docker/run/pipeline.sh $GATK_PATH $REFERENCE_FOLDER $OUT_FOLDER $known
 

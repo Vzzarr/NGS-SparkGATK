@@ -1,7 +1,7 @@
 version: '3.2' 
 services:
   spark-master:
-    image: vzzarr/spark-master:2.2.0-hadoop2.8-hive-java8
+    image: vzzarr/spark-master:gatk4_0_2
     networks:
       - core
     deploy:
@@ -10,6 +10,8 @@ services:
       restart_policy:
         condition: on-failure
     ports:
+      - 4040:4040
+      - 6066:6066
       - 8080:8080
       - 7077:7077
     env_file:
@@ -29,6 +31,8 @@ services:
       mode: global
       restart_policy:
         condition: on-failure
+    ports:
+      - 8081:8081
     env_file:
       - ./hadoop-swarm.env
     volumes:
