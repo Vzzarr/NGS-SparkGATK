@@ -1,0 +1,15 @@
+\newenvironment{dedication}
+  {\clearpage           % we want a new page
+   \thispagestyle{empty}% no header and footer
+   \vspace*{\stretch{1}}% some space at the top 
+   \itshape             % the text is in italics
+   \raggedleft          % flush to the right margin
+  }
+  {\par % end the paragraph
+   \vspace{\stretch{3}} % space at bottom is three times that at the top
+   \clearpage           % finish off the page
+  }
+\begin{dedication}
+In a way this project has the goal to detect and annotate genome variants which may be deleterious, such as cancer, heart attacks or alzheimer.\newline
+So this project is dedicated to my grandma, who left us during my Master Degree due to alzheimer illness.
+\end{dedication}

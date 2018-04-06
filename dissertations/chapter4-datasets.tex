@@ -1,0 +1,86 @@
+As mentioned in previous chapters, many tools of the pipeline required specific datasets in input on the file system.
+
+
+\section{Input samples}
+The input samples of the pipeline, as exposed in Background chapter are compressed Whole Exome Sequencing genomes, of about 15 GB size. In particular has been used a cohort of anonymised patients, provided by the Institute of Genetic Medicine in Newcastle upon Tyne.
+
+\section{Reference Genome}
+A reference genome is a digital nucleic acid sequence database, assembled by scientists as a representative example of a species' set of genes. As they are often assembled from the sequencing of DNA from a number of donors, reference genomes do not accurately represent the set of genes of any single person. Instead a reference provides a haploid mosaic of different DNA sequences from each donor.\newline
+As the cost of DNA sequencing falls, and new full genome sequencing technologies emerge, more genome sequences continue to be generated. Reference genomes are typically used as a guide on which new genomes are built, enabling them to be assembled much more quickly and cheaply than the initial Human Genome Project. For much of a genome, the reference provides a good approximation of the DNA of any single individual \cite{WIKI:reference_genome}.\newline
+In Table \ref{human_genomes} have been reported the recent human genome assemblies. In this project has been used the hg19 provided by the University of California, Santa Cruz. Is possible to download it from Internet, from one of the mirror servers. For the pipeline are even necessary further files in the folder containing the reference genome. Through proper GATK tools they can be created.
+
+
+\begin{table}[h]
+	\caption{Recent human genome assemblies~\label{human_genomes}}
+	\begin{center}
+		\begin{tabular}{| l | l | l | l |}
+    		\hline
+    		Release name & Date of release & Equivalent UCSC version \\ \hline
+		    GRCh38	&	Dec 2013	&	hg38 \\ \hline
+			GRCh37	&	Feb 2009	&	hg19 \\ \hline
+			NCBI Build 36.1	&	Mar 2006	&	hg18 \\ \hline
+			NCBI Build 35	&	May 2004	&	hg17 \\ \hline
+			NCBI Build 34	&	Jul 2003	&	hg16 \\ \hline
+    	\end{tabular}
+    \end{center}
+\end{table}
+
+
+\section{Known Sites}
+Each tool uses known sites differently, but what is common to all is that they use them to help distinguish true variants from false positives, which is very important to how these tools work. If not provided, the statistical analysis of the data will be skewed, which can dramatically affect the sensitivity and reliability of the results. GATK provides sets of known sites in the human genome as part of their resource bundle, giving specific recommendations on which sets to use for each tool in the variant calling pipeline \cite{known_sites}. Indeed in this pipeline have been used for BaseRecaibrator and VariantRecalibrator the known sites reported in Table \ref{known_sites}.
+\begin{table}[h]
+	\caption{Required Known Sites ~\label{known_sites}}
+	\begin{center}
+		\begin{tabular}{| l | l | l | l | l | l | l |}
+    		\hline
+    		Tool	&	dbSNP 129	&	dbSNP >132	&	Mills indels	&	1KG indels	&	HapMap	&	Omni \\ \hline
+            BaseRecalibrator	&	 	&	X	&	X	&	X	&	 	&	  \\ \hline
+            VariantRecalibrator	&	 	&	X	&	X	&	 	&	X	&	X \\ \hline
+    	\end{tabular}
+    \end{center}
+\end{table}
+\\[1\baselineskip]
+
+\begin{itemize}
+	\item \textbf{BaseRecalibrator}: This tool requires known SNPs and INDELs passed with the \textit{--known-sites} argument to function properly. Have been used all the following files:
+    \begin{itemize}
+	    \item The most recent dbSNP release (build ID > 132)
+	    \item Mills\_and\_1000G\_gold\_standard.indels.hg19.vcf
+        \item 1000G\_phase1.indels.b37.vcf (currently from the 1000 Genomes Phase I indel calls)
+    \end{itemize}
+    
+    \item \textbf{VariantRecalibrator}: resource datasets and arguments that GATK recommends for use in the two steps of VQSR (i.e. the successive application of VariantRecalibrator and ApplyRecalibration). 
+    \begin{itemize}
+    	\item Resources for SNPs
+        \begin{itemize}
+        	\item True sites training resource: \textit{HapMap} \newline
+This resource is a SNP call set that has been validated to a very high degree of confidence. The program will consider that the variants in this resource are representative of true sites (truth=true), and will use them to train the recalibration model (training=true). These sites will be used later on to choose a threshold for filtering variants based on sensitivity to truth sites. The prior likelihood assigned to these variants is Q15 (96.84\%).
+			\item True sites training resource: \textit{Omni} \newline
+This resource is a set of polymorphic SNP sites produced by the Omni geno- typing array. The program will consider that the variants in this resource are representative of true sites (truth=true), and will use them to train the recalibration model (training=true). The prior likelihood assigned to these variants is Q12 (93.69\%).
+			\item Non-true sites training resource: \textit{1000G} \newline
+This resource is a set of high-confidence SNP sites produced by the 1000 Genomes Project. The program will consider that the variants in this re- source may contain true variants as well as false positives (truth=false), and will use them to train the recalibration model (training=true). The prior likelihood assigned to these variants is Q10 (90\%).
+			\item Known sites resource, not used in training: \textit{dbSNP} \newline
+This resource is a call set that has not been validated to a high degree of confidence (truth=false). The program will not use the variants in this resource to train the recalibration model (training=false). However, the program will use these to stratify output metrics such as Ti/Tv ratio by whether variants are present in dbsnp or not (known=true). The prior likelihood assigned to these variants is Q2 (36.90\%).
+        \end{itemize}
+    	\item Resources for INDELs
+        \begin{itemize}
+        	\item True sites training resource: \textit{Mills} \newline
+This resource is an INDEL call set that has been validated to a high degree of confidence. The program will consider that the variants in this resource are representative of true sites (truth=true), and will use them to train the recalibration model (training=true). The prior likelihood assigned to these variants is Q12 (93.69\%).
+            \item Known sites resource, not used in training: \textit{dbSNP} \newline
+This resource is a call set that has not been validated to a high degree of confidence (truth=false). The program will not use the variants in this resource to train the recalibration model (training=false). However, the program will use these to stratify output metrics such as Ti/Tv ratio by whether variants are present in dbsnp or not (known=true). The prior likelihood assigned to these variants is Q2 (36.90\%) \cite{variant_recalibrator}.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+
+\section{Variant Annotation}
+The process of Variant Annotation has been delivered through ANNOVAR. The easiest way to use ANNOVAR is to use the \textit{table\_annovar.pl} program. This program takes an input variant file (such as a VCF file) and generate a tab-delimited output file with many columns, each representing one set of annotations. Additionally, if the input is a VCF file, the program also generates a new output VCF file with the INFO field filled with annotation information.\newline
+After downloaded and unpacked the ANNOVAR package, is possible to observe that the bin/ directory contains several Perl programs with .pl suffix. First, is necessary to download appropriate database files using \textit{annotate\_variation.pl}, for then running the \textit{table\_annovar.pl} program to annotate the variants in the input file. In this project have been downloaded and used these databases: knownGene, ensGene, refGene, phastConsElements46way, genomicSuperDups, esp6500si\_all, 1000g2012apr\_all, cg69, snp137, ljb26\_all. Similarly to the previous pipeline \cite{ScalableEfficientWhole-ExomeProcessing}. \newline
+Fields that does not have any annotation will be filled by "." string. Opening the output file in Excel shows what it contains \cite{ANNOVAR_startup}.
+
+
+
+
+
+
+

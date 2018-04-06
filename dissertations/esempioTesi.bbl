@@ -1,0 +1,34 @@
+\begin{thebibliography}{AHPZ96}
+
+\bibitem[AHPZ96]{AHL:1996}
+Eric Andonoff, Gilles Hubert, Annig~Le Parc, and Gilles Zurfluh.
+\newblock Integrating versions in the omt models.
+\newblock In {\em ER '96: Proceedings of the 15th International Conference on
+  Conceptual Modeling}, pages 472--487, London, UK, 1996. Springer-Verlag.
+
+\bibitem[Box97]{BOX:1997}
+D.~Box.
+\newblock {\em Essential COM}.
+\newblock Addison Wesley Professional, 1997.
+
+\bibitem[JS96]{jones96analysis}
+Trevor~H. Jones and Il-Yeol Song.
+\newblock Analysis of binary/ternary cardinality combinations in
+  entity-relationship modeling.
+\newblock {\em Data Knowledge Engineering}, 19(1):39--64, 1996.
+
+\bibitem[MS05]{UUID:2005}
+M.~Mealling and R.~Salz.
+\newblock A universally unique identifier (uuid) urn namespace.
+\newblock {\em RFC 4122}, 2005.
+
+\bibitem[oEE90]{IEEE:1990}
+Institute of~Electrical and Electronics Engineers.
+\newblock Ieee standard computer dictionary: A compilation of ieee standard
+  computer glossaries, 1990.
+
+\bibitem[Wik]{WIKI:INTEROP}
+Wikipedia.
+\newblock \url{http://en.wikipedia.org/wiki/Interoperability}.
+
+\end{thebibliography}

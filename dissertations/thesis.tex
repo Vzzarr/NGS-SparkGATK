@@ -1,0 +1,78 @@
+% Classe appositamente creata per tesi di Ingegneria Informatica all'università Roma Tre
+\documentclass{TesiDiaUniroma3}
+
+\usepackage{rotating}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue}
+}
+
+\usepackage{tikz,pgfplots}
+
+\usepackage[font=small,labelfont=bf,tableposition=top]{caption}
+\DeclareCaptionType[fileext=loc]{chart}[Chart][List of Charts]
+\usepackage{float}
+
+
+
+% --- INIZIO dati relativi al template TesiDiaUniroma3
+% dati obbligatori, necessari al frontespizio
+\titolo{An Efficient Design of a Next Generation Sequencing pipeline with Apache Spark}
+\autore{Nicholas Tucci}
+\matricola{461669}
+\relatore{Prof. Riccardo Torlone}
+\correlatore{Prof. Paolo Missier} % modifica anche TesiDiaUniroma3.cls se vuoi avere un correlatore
+\annoAccademico{2016/2017}
+
+% dati opzionali
+\dedica{Questa \`e la dedica} % solo se nel documento si usa il comando \generaDedica
+% --- FINE dati relativi al template TesiDiaUniroma3
+
+% --- INIZIO richiamo di pacchetti di utilità. Questi sono un esempio e non sono strettamente necessari al modello per la tesi.
+\usepackage[plainpages=false]{hyperref}	% generazione di collegamenti ipertestuali su indice e riferimenti
+\usepackage[all]{hypcap} % per far si che i link ipertestuali alle immagini puntino all'inizio delle stesse e non alla didascalia sottostante
+\usepackage{amsthm}	% per definizioni e teoremi
+\usepackage{amsmath}	% per ``cases'' environment
+% --- FINE riachiamo di pacchetti di utilità
+
+\begin{document}
+% ----- Pagine di fronespizio, numerate in romano (i,ii,iii,iv...) (obbligatorio)
+\frontmatter
+\generaFrontespizio
+\input{dedication}
+\newpage
+\ringraziamenti{ringraziamenti}	% inserisce i ringraziamenti e li prende in questo caso da ringraziamenti.tex
+\newpage
+\input{abstract}
+\newpage
+\introduzione{introduzione}		% inserisce l'introduzione e la prende in questo caso da introduzione.tex
+\generaIndice
+\listoffigures
+\listoftables
+\newpage
+\listofcharts
+
+% ----- Pagine di tesi, numerate in arabo (1,2,3,4,...) (obbligatorio)
+\mainmatter
+% il comando ``capitolo'' ha come parametri:
+% 1) il titolo del capitolo
+% 2) il nome del file tex (senza estensione) che contiene il capitolo. Tale nome \`e usato anche come label del capitolo
+\capitolo{Background}{chapter1-background}
+\capitolo{Pipeline}{chapter2-pipeline}
+\capitolo{Clustering}{chapter3-clustering}
+\capitolo{Datasets}{chapter4-datasets}
+\capitolo{Performance Analysis}{chapter5-performance_analysis}
+
+% ----- Parte finale della tesi (obbligatorio)
+\backmatter
+\conclusioni{conclusioni}
+
+% Bibliografia con BibTeX (obbligatoria)
+% Non si deve specificare lo stile della bibliografia
+\bibliography{bibliografia} % inserisce la bibliografia e la prende in questo caso da bibliografia.bib
+
+\end{document}

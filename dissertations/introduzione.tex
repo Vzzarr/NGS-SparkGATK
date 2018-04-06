@@ -1,0 +1,17 @@
+This pipeline follows the GATK Best Practices, in particular is a Germline short variant discovery pipeline ~\cite{Germline}; it means that processing a cohort of human genomes, with a machine learning approach, allows  to predict and enumerate the mutations that are present in a human patient's genome, identifying mutations that are known, from research literature, to be deleterious.\\[1\baselineskip]
+Few years ago, to execute these pipelines were used HPC (High Performance Computing) clusters, data centre designed in order to process these genomes, making very high the "Entry Gate Cost"; but since the recent advent of the Cloud Computing, the Entry Gate Cost decreases, allowing even other organizations to execute these pipelines and introducing improvements in it. \cite{CloudComputingGenome}
+\\[1\baselineskip]
+For this reason many solutions were created in order to execute these pipelines with more efficiency; since that each patient's genome is made of tens of Gigabytes, and to process the pipeline are required at least ten patients, it is possible to talk about Big Data in this domain. One recent important Big Data technology is Apache Spark, whose basic idea is to keep in memory the results produced by intermediate steps, avoiding disk access, a very time consuming task. Since that these genome pipelines produce different intermediate files of big size, of course introducing a Spark approach to these pipelines would increase their efficiency.
+\\[1\baselineskip]
+This thesis is structured in this way:
+\begin{enumerate}
+  \item Background: in this chapter will be discussed the previous topics with more details, explaining the pipeline's functionalities from a Bioinformatics point of view. Moreover will be given an overview of the technologies and software used to delivery the pipeline.
+  \item Pipeline: description of the pipeline implementation.
+  \item Clustering: since that has been used Apache Spark to implement this pipeline, this technology gives the opportunity of distribute the computation on a computer-cluster. This chapter describe the delivery of the pipeline on a cluster, using Docker for provisioning the nodes of the cluster.
+  \item Datasets: description of the input samples used for the pipeline and all the required data in order to execute the GATK tools (used in this pipeline): from the reference genome to the known sites and annotation databases.
+  \item Performance Analysis: numbers that help to understand which is the best parameters configuration in order to obtain maximum performance and compare with other solutions. 
+\end{enumerate}
+
+
+
+
